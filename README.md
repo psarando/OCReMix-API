@@ -10,6 +10,7 @@ Notably, I have only described endpoints for fetching single entities given an I
 * [Albums](#albums)
 * [Composers and Artists](#composers-and-artists)
 * [Chiptunes](#chiptunes)
+* [Systems](#systems)
 
 ## Remixes
 
@@ -537,6 +538,7 @@ Optional keys for this endpoint:
     ]
 }
 ```
+
 ## Albums
 
 ### GET /album/000
@@ -919,5 +921,155 @@ Optional keys for this endpoint:
         "id": 6,
         "name": "Final Fantasy VI"
     }
+}
+```
+
+## Systems
+
+### GET /system/xxxx
+
+```json
+{
+    "id": "xxxx",
+    "name": "System",
+    "name_jp": "...",
+    "year": 0000,
+    "publisher": {
+        "id": 000,
+        "name": "..."
+    },
+    "references": [
+        "http://www.gamefaqs.com/...",
+        "http://www.uvlist.net/...",
+        "http://en.wikipedia.org/wiki/..."
+    ],
+    "composers": [
+        {
+            "id": 0000,
+            "name": "Composer"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ],
+    "games": [
+        {
+            "id": 0000,
+            "name": "Video Game"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ],
+    "albums": [
+        {
+            "id": 00,
+            "name": "remix album"
+        },
+        {
+            "id": 00,
+            "name": "..."
+        }
+    ],
+    "remixes": [
+        {
+            "id": "OCR00000",
+            "title": "mix title"
+        },
+        {
+            "id": "OCR00000",
+            "title": "..."
+        }
+    ]
+}
+```
+
+### OCReMix.org URL conversions
+
+| Key | URL |
+| --- | --- |
+| system (root) | http://ocremix.org/system/ `id` |
+| `publisher` | http://ocremix.org/org/ `publisher.id` |
+| `composers` | http://ocremix.org/artist/ `composers[x].id` |
+| `games` | http://ocremix.org/game/ `games[x].id` |
+| `albums` | http://ocremix.org/album/ `albums[x].id` |
+| `remixes` | http://ocremix.org/remix/ `remixes[x].id` |
+
+### Example
+
+`curl http://ocremix.org/api/v1/system/snes`
+
+```json
+{
+    "id": "snes",
+    "name": "SNES",
+    "year": 1990,
+    "publisher": {
+        "id": 2,
+        "name": "Nintendo"
+    },
+    "references": [
+        "http://www.gamefaqs.com/console/snes/",
+        "http://www.uvlist.net/platforms/detail/6-SNES",
+        "http://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System"
+    ],
+    "composers": [
+        {
+            "id": 2,
+            "name": "Koji Kondo"
+        },
+        {
+            "id": 3,
+            "name": "Nobuo Uematsu"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ],
+    "games": [
+        {
+            "id": 6,
+            "name": "Final Fantasy VI"
+        },
+        {
+            "id": 16,
+            "name": "Chrono Trigger"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ],
+    "albums": [
+        {
+            "id": 46,
+            "name": "Final Fantasy VI: Balance and Ruin"
+        },
+        {
+            "id": 00,
+            "name": "..."
+        }
+    ],
+    "remixes": [
+        {
+            "id": "OCR02885",
+            "title": "Go-Go Gadget Gonkulator"
+        },
+        {
+            "id": "OCR02854",
+            "title": "La Montaña de los Caballos Jóvenes"
+        },
+        {
+            "id": "OCR02700",
+            "title": "Terra's Resolve"
+        },
+        {
+            "id": "OCR00000",
+            "title": "..."
+        }
+    ]
 }
 ```
