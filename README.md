@@ -11,6 +11,12 @@ Notably, I have only described endpoints for fetching single entities given an I
 * [Composers and Artists](#composers-and-artists)
 * [Chiptunes](#chiptunes)
 * [Systems](#systems)
+* [Organizations](#organizations)
+  * [Composers by Organization](#composers-by-organization)
+  * [Games by Organization](#games-by-organization)
+  * [Systems by Organization](#systems-by-organization)
+  * [Albums by Organization](#albums-by-organization)
+  * [Remixes by Organization](#remixes-by-organization)
 
 ## Remixes
 
@@ -1053,6 +1059,308 @@ Optional keys for this endpoint:
             "name": "..."
         }
     ],
+    "remixes": [
+        {
+            "id": "OCR02885",
+            "title": "Go-Go Gadget Gonkulator"
+        },
+        {
+            "id": "OCR02854",
+            "title": "La Montaña de los Caballos Jóvenes"
+        },
+        {
+            "id": "OCR02700",
+            "title": "Terra's Resolve"
+        },
+        {
+            "id": "OCR00000",
+            "title": "..."
+        }
+    ]
+}
+```
+
+## Organizations
+
+### GET /org/000
+
+```json
+{
+    "id": 000,
+    "name": "Org",
+    "name_jp": "...",
+    "references": [
+        "http://www.gamefaqs.com/...",
+        "http://www.uvlist.net/...",
+        "http://en.wikipedia.org/wiki/..."
+    ]
+}
+```
+
+### OCReMix.org URL conversions
+
+| Key | URL |
+| --- | --- |
+| organization (root) | http://ocremix.org/org/ `id` |
+
+### Example
+
+`curl http://ocremix.org/api/v1/org/2`
+
+```json
+{
+    "id": 2,
+    "name": "Nintendo",
+    "references": [
+        "http://www.gamefaqs.com/features/company/1143.html",
+        "http://www.nintendo.com/",
+        "http://www.mobygames.com/company/nintendo-co-ltd",
+        "http://twitter.com/NintendoAmerica",
+        "http://www.youtube.com/user/Nintendo"
+    ]
+}
+```
+
+## Composers by Organization
+
+### GET /org/000/artists
+
+```json
+{
+    "id": 000,
+    "name": "Org",
+    "composers": [
+        {
+            "id": 0000,
+            "name": "Composer"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### OCReMix.org URL conversions
+
+| Key | URL |
+| --- | --- |
+| organization (root) | http://ocremix.org/org/ `id` |
+| `composers` | http://ocremix.org/artist/ `composers[x].id` |
+
+### Example
+
+`curl http://ocremix.org/api/v1/org/2/artists`
+
+```json
+{
+    "id": 2,
+    "name": "Nintendo",
+    "composers": [
+        {
+            "id": 2,
+            "name": "Koji Kondo"
+        },
+        {
+            "id": 3,
+            "name": "Nobuo Uematsu"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ]
+}
+```
+
+## Games by Organization
+
+### GET /org/000/games
+
+```json
+{
+    "id": 000,
+    "name": "Org",
+    "games": [
+        {
+            "id": 0000,
+            "name": "Video Game"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### OCReMix.org URL conversions
+
+| Key | URL |
+| --- | --- |
+| organization (root) | http://ocremix.org/org/ `id` |
+| `games` | http://ocremix.org/game/ `games[x].id` |
+
+### Example
+
+`curl http://ocremix.org/api/v1/org/2/games`
+
+```json
+{
+    "id": 2,
+    "name": "Nintendo",
+    "games": [
+        {
+            "id": 6,
+            "name": "Final Fantasy VI"
+        },
+        {
+            "id": 16,
+            "name": "Chrono Trigger"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ]
+}
+```
+
+## Systems by Organization
+
+### GET /org/000/systems
+
+```json
+{
+    "id": 000,
+    "name": "Org",
+    "systems": [
+        {
+            "id": "xxxx",
+            "name": "System"
+        },
+        {
+            "id": "xxxx",
+            "name": "..."
+        }
+    ]
+}
+```
+
+### OCReMix.org URL conversions
+
+| Key | URL |
+| --- | --- |
+| organization (root) | http://ocremix.org/org/ `id` |
+| `systems` | http://ocremix.org/system/ `systems[x].id` |
+
+### Example
+
+`curl http://ocremix.org/api/v1/org/2/systems`
+
+```json
+{
+    "id": 2,
+    "name": "Nintendo",
+    "systems": [
+        {
+            "id": "snes",
+            "name": "SNES"
+        },
+        {
+            "id": "xxxx",
+            "name": "..."
+        }
+    ]
+}
+```
+
+## Albums by Organization
+
+### GET /org/000/albums
+
+```json
+{
+    "id": 000,
+    "name": "Org",
+    "albums": [
+        {
+            "id": 00,
+            "name": "remix album"
+        },
+        {
+            "id": 00,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### OCReMix.org URL conversions
+
+| Key | URL |
+| --- | --- |
+| organization (root) | http://ocremix.org/org/ `id` |
+| `albums` | http://ocremix.org/album/ `albums[x].id` |
+
+### Example
+
+`curl http://ocremix.org/api/v1/org/2/albums`
+
+```json
+{
+    "id": 2,
+    "name": "Nintendo",
+    "albums": [
+        {
+            "id": 46,
+            "name": "Final Fantasy VI: Balance and Ruin"
+        },
+        {
+            "id": 00,
+            "name": "..."
+        }
+    ]
+}
+```
+
+## Remixes by Organization
+
+### GET /org/000/remixes
+
+```json
+{
+    "id": 000,
+    "name": "Org",
+    "remixes": [
+        {
+            "id": "OCR00000",
+            "title": "mix title"
+        },
+        {
+            "id": "OCR00000",
+            "title": "..."
+        }
+    ]
+}
+```
+
+### OCReMix.org URL conversions
+
+| Key | URL |
+| --- | --- |
+| organization (root) | http://ocremix.org/org/ `id` |
+| `remixes` | http://ocremix.org/remix/ `remixes[x].id` |
+
+### Example
+
+`curl http://ocremix.org/api/v1/org/2/remixes`
+
+```json
+{
+    "id": 2,
+    "name": "Nintendo",
     "remixes": [
         {
             "id": "OCR02885",
