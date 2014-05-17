@@ -3,14 +3,53 @@
 This API is a rough draft I want to propose to OCR and is probably missing some parts.
 Notably, I have only described endpoints for fetching single entities given an ID. I have not yet described endpoints for listing, searching, or filtering items.
 
+#### OCReMix.org URL conversions from API IDs.
+
+Some devs may want links to OCR's site for entities such as artists, games, songs, and composers. I have opted to leave URLs out of this spec, but I have included a conversion table below describing how an OCR URL can be reconstructed using an ID from this API. In fact, the IDs used as examples in this spec were taken from URLs on the ocremix.org site.
+
+| API ID | URL |
+| --- | --- |
+| `remixes` | http://ocremix.org/remix/ `id` |
+| `artists` (Remixers/Arrangers/Composers/Bands) | http://ocremix.org/artist/ `id` |
+| `songs` | http://ocremix.org/song/ `id` |
+| `albums` | http://ocremix.org/album/ `id` |
+| `chiptunes` | http://ocremix.org/chip/ `id` |
+| `games` | http://ocremix.org/game/ `id` |
+| `systems` | http://ocremix.org/system/ `id` |
+| `publishers` | http://ocremix.org/org/ `id` |
+
+These table conversions can make a URL shorter than what you get navigating ocremix.org, however, a short URL constructed using this API will return an HTTP 301 response with the full URL in the `Location` header. So a request to the URL `http://ocremix.org/artist/4279` will return a 301 redirect to `http://ocremix.org/artist/4279/djpretzel`.
+
+Alternatively, the full URLs could be included for each entity, such as the following:
+```json
+{
+    "id": 4279,
+    "name": "djpretzel",
+    "url": "http://ocremix.org/artist/4279/djpretzel"
+}
+```
+
 ## Table of Contents
 * [Remixes](#remixes)
 * [Source Songs](#source-songs)
+  * [Remixes by Song](#remixes-by-song)
 * [Games](#games)
+  * [Songs by Game](#songs-by-game)
+  * [Albums by Game](#albums-by-game)
+  * [Remixes by Game](#remixes-by-game)
 * [Albums](#albums)
+  * [Composers by Album](#composers-by-album)
+  * [Remixes by Album](#remixes-by-album)
 * [Composers and Artists](#composers-and-artists)
+  * [Games by Artist](#games-by-artist)
+  * [Albums by Artist](#albums-by-artist)
+  * [Remixes by Artist](#remixes-by-artist)
 * [Chiptunes](#chiptunes)
 * [Systems](#systems)
+  * [Composers by System](#composers-by-system)
+  * [Games by System](#games-by-system)
+  * [Albums by System](#albums-by-system)
+  * [Remixes by System](#remixes-by-system)
 * [Organizations](#organizations)
   * [Composers by Organization](#composers-by-organization)
   * [Games by Organization](#games-by-organization)
@@ -27,14 +66,6 @@ My idea with this endpoint is to return enough information to completely tag an 
 Optional keys for this endpoint:
 
 * `mixpost` Although I like the idea of including this info in this endpoint, it's also reasonable to have a separate endpoint to fetch this info given an `OCR00000` ID.
-* `*.url` Some devs may want links to OCR's site for entities such as artists, games, songs, and composers? I have opted to leave URLs out of this spec, but I have included a conversion table in each section describing how a URL can be reconstructed using an entity's ID. This makes the URL shorter than what you get navigating ocremix.org, however, a short URL constructed using this API will return an HTTP 301 response with the full URL in the `Location` header. So a request to the URL `http://ocremix.org/artist/4279` will return a 301 redirect to `http://ocremix.org/artist/4279/djpretzel`. Alternatively, the full URLs could be included for each entity, such as the following:
-```json
-{
-    "id": 4279,
-    "name": "djpretzel",
-    "url": "http://ocremix.org/artist/4279/djpretzel"
-}
-```
 * `publisher`, `system`, `game.year` These can be fetched from the `/game/` endpoint instead.
 
 ```json
@@ -118,19 +149,6 @@ Optional keys for this endpoint:
     }
 }
 ```
-
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| remix (root) | http://ocremix.org/remix/ `id` |
-| `artists` | http://ocremix.org/artist/ `artists[x].id` |
-| `composers` | http://ocremix.org/artist/ `composers[x].id` |
-| `songs` | http://ocremix.org/song/ `songs[x].id` |
-| `game` | http://ocremix.org/game/ `game.id` |
-| `publisher` | http://ocremix.org/org/ `publisher.id` |
-| `system` | http://ocremix.org/system/ `system.id` |
-| `album` | http://ocremix.org/album/ `album.id` |
 
 ### OCReMix mp3 Tagging Standard
 
@@ -266,29 +284,9 @@ Optional keys for this endpoint:
             "name": "Chiptune-filename.rsn",
             "size": 0000
         }
-    ],
-    "remixes": [
-        {
-            "id": "OCR00000",
-            "title": "mix title"
-        },
-        {
-            "id": "OCR00000",
-            "title": "..."
-        }
     ]
 }
 ```
-
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| song (root) | http://ocremix.org/song/ `id` |
-| `game` | http://ocremix.org/game/ `game.id` |
-| `composers` | http://ocremix.org/artist/ `composers[x].id` |
-| `chiptunes` | http://ocremix.org/chip/ `chiptunes[x].id` |
-| `remixes` | http://ocremix.org/remix/ `remixes[x].id` |
 
 ### Example
 
@@ -318,7 +316,39 @@ Optional keys for this endpoint:
             "name": "final-fantasy-vi-snes-[SPC-ID6384].rsn",
             "size": 289500
         }
-    ],
+    ]
+}
+```
+
+## Remixes by Song
+
+### GET /song/0000/remixes
+
+```json
+{
+    "id": 0000,
+    "name": "Song Name",
+    "remixes": [
+        {
+            "id": "OCR00000",
+            "title": "mix title"
+        },
+        {
+            "id": "OCR00000",
+            "title": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/song/11/remixes`
+
+```json
+{
+    "id": 11,
+    "name": "Terra",
     "remixes": [
         {
             "id": "OCR00068",
@@ -347,8 +377,8 @@ Optional keys for this endpoint:
 ```json
 {
     "id": 000,
-    "name": "game: perhaps some subtitle",
-    "name_short": "game",
+    "name": "Video Game: perhaps some subtitle",
+    "name_short": "Video Game",
     "name_jp": "...",
     "year": 0000,
     "publisher": {
@@ -397,52 +427,9 @@ Optional keys for this endpoint:
             "name": "...",
             "size": 0000
         }
-    ],
-    "songs": [
-        {
-            "id": 0000,
-            "name": "orig song title"
-        },
-        {
-            "id": 0000,
-            "name": "..."
-        }
-    ],
-    "albums": [
-        {
-            "id": 00,
-            "name": "remix album"
-        },
-        {
-            "id": 00,
-            "name": "..."
-        }
-    ],
-    "remixes": [
-        {
-            "id": "OCR00000",
-            "title": "mix title"
-        },
-        {
-            "id": "OCR00000",
-            "title": "..."
-        }
     ]
 }
 ```
-
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| game (root) | http://ocremix.org/game/ `id` |
-| `publisher` | http://ocremix.org/org/ `publisher.id` |
-| `system` | http://ocremix.org/system/ `system.id` |
-| `composers` | http://ocremix.org/artist/ `composers[x].id` |
-| `chiptunes` | http://ocremix.org/chip/ `chiptunes[x].id` |
-| `songs` | http://ocremix.org/song/ `songs[x].id` |
-| `albums` | http://ocremix.org/album/ `albums[x].id` |
-| `remixes` | http://ocremix.org/remix/ `remixes[x].id` |
 
 ### Example
 
@@ -491,7 +478,39 @@ Optional keys for this endpoint:
             "name": "final-fantasy-vi-snes-[SPC-ID6384].rsn",
             "size": 289500
         }
-    ],
+    ]
+}
+```
+
+## Songs by Game
+
+### GET /game/000/songs
+
+```json
+{
+    "id": 000,
+    "name": "Video Game",
+    "songs": [
+        {
+            "id": 0000,
+            "name": "orig song title"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/game/6/songs`
+
+```json
+{
+    "id": 6,
+    "name": "Final Fantasy VI",
     "songs": [
         {
             "id": 10,
@@ -513,7 +532,39 @@ Optional keys for this endpoint:
             "name": "...",
             "remix_count": 0
         }
-    ],
+    ]
+}
+```
+
+## Albums by Game
+
+### GET /game/000/albums
+
+```json
+{
+    "id": 000,
+    "name": "Video Game",
+    "albums": [
+        {
+            "id": 00,
+            "name": "remix album"
+        },
+        {
+            "id": 00,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/game/6/albums`
+
+```json
+{
+    "id": 6,
+    "name": "Final Fantasy VI",
     "albums": [
         {
             "id": 46,
@@ -523,7 +574,39 @@ Optional keys for this endpoint:
             "id": 00,
             "name": "..."
         }
-    ],
+    ]
+}
+```
+
+## Remixes by Game
+
+### GET /game/000/remixes
+
+```json
+{
+    "id": 000,
+    "name": "Video Game",
+    "remixes": [
+        {
+            "id": "OCR00000",
+            "title": "mix title"
+        },
+        {
+            "id": "OCR00000",
+            "title": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/game/6/remixes`
+
+```json
+{
+    "id": 6,
+    "name": "Final Fantasy VI",
     "remixes": [
         {
             "id": "OCR02885",
@@ -566,16 +649,6 @@ Optional keys for this endpoint:
     "release_date": "0000-00-00",
     "media": "...",
     "vgmdb_id": 00000,
-    "composers": [
-        {
-            "id": 0000,
-            "name": "Composer"
-        },
-        {
-            "id": 0000,
-            "name": "..."
-        }
-    ],
     "artists": [
         {
             "id": 0000,
@@ -594,30 +667,9 @@ Optional keys for this endpoint:
         "http://homepage",
         "http://..."
     ],
-    "forum_comments": "http://ocremix.org/forums/showthread.php?t=...",
-    "singles": [
-        {
-            "id": "OCR00000",
-            "title": "mix title"
-        },
-        {
-            "id": "OCR00000",
-            "title": "..."
-        }
-    ]
+    "forum_comments": "http://ocremix.org/forums/showthread.php?t=..."
 }
 ```
-
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| album (root) | http://ocremix.org/album/ `id` |
-| `game` | http://ocremix.org/game/ `game.id` |
-| `publisher` | http://ocremix.org/org/ `publisher.id` |
-| `composers` | http://ocremix.org/artist/ `composers[x].id` |
-| `artists` | http://ocremix.org/artist/ `artists[x].id` |
-| `singles` | http://ocremix.org/remix/ `singles[x].id` |
 
 ### Example
 
@@ -640,12 +692,6 @@ Optional keys for this endpoint:
     "release_date": "2013-07-01",
     "media": "5 Digital",
     "vgmdb_id": 40213,
-    "composers": [
-        {
-            "id": 3,
-            "name": "Nobuo Uematsu"
-        }
-    ],
     "artists": [
         {
             "id": 36,
@@ -670,8 +716,78 @@ Optional keys for this endpoint:
     "references": [
         "http://ff6.ocremix.org/"
     ],
-    "forum_comments": "http://ocremix.org/forums/showthread.php?t=44287",
-    "singles": [
+    "forum_comments": "http://ocremix.org/forums/showthread.php?t=44287"
+}
+```
+
+## Composers by Album
+
+### GET /album/000/composers
+
+```json
+{
+    "id": 00,
+    "name": "album name",
+    "composers": [
+        {
+            "id": 0000,
+            "name": "Composer"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/album/46/composers`
+
+```json
+{
+    "id": 46,
+    "name": "Final Fantasy VI: Balance and Ruin",
+    "composers": [
+        {
+            "id": 3,
+            "name": "Nobuo Uematsu"
+        }
+    ]
+}
+```
+
+## Remixes by Album
+
+### GET /album/000/remixes
+
+```json
+{
+    "id": 00,
+    "name": "album name",
+    "remixes": [
+        {
+            "id": "OCR00000",
+            "title": "mix title"
+        },
+        {
+            "id": "OCR00000",
+            "title": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/album/46/remixes`
+
+```json
+{
+    "id": 46,
+    "name": "Final Fantasy VI: Balance and Ruin",
+    "remixes": [
         {
             "id": "OCR02885",
             "title": "Go-Go Gadget Gonkulator"
@@ -719,8 +835,14 @@ Optional keys for this endpoint:
     "birthdate": "0000-00-00",
     "birthplace": "city/state/provence, country",
     "groups": [
-        "...",
-        "..."
+        {
+            "id": 0000,
+            "name": "Band Name"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
     ],
     "forum_profile": "http://ocremix.org/forums/member.php?u=...",
     "images": [
@@ -731,48 +853,9 @@ Optional keys for this endpoint:
         "http://www.facebook.com/...",
         "http://twitter.com/...",
         "http://..."
-    ],
-    "games": [
-        {
-            "id": 0000,
-            "name": "Video Game"
-        },
-        {
-            "id": 00,
-            "name": "..."
-        }
-    ],
-    "albums": [
-        {
-            "id": 00,
-            "name": "remix album"
-        },
-        {
-            "id": 00,
-            "name": "..."
-        }
-    ],
-    "remixes": [
-        {
-            "id": "OCR00000",
-            "title": "mix title"
-        },
-        {
-            "id": "OCR00000",
-            "title": "..."
-        }
     ]
 }
 ```
-
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| artist (root) | http://ocremix.org/artist/ `id` |
-| `games` | http://ocremix.org/game/ `games[x].id` |
-| `albums` | http://ocremix.org/album/ `albums[x].id` |
-| `remixes` | http://ocremix.org/remix/ `remixes[x].id` |
 
 ### Example
 
@@ -814,7 +897,39 @@ Optional keys for this endpoint:
         "http://twitter.com/UematsuNobuo",
         "http://vgmdb.net/artist/77",
         "http://en.wikipedia.org/wiki/Nobuo_Uematsu"
-    ],
+    ]
+}
+```
+
+## Games by Artist
+
+### GET /artist/000/games
+
+```json
+{
+    "id": 000,
+    "name": "Artist Name",
+    "games": [
+        {
+            "id": 0000,
+            "name": "Video Game"
+        },
+        {
+            "id": 00,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/artist/3/games`
+
+```json
+{
+    "id": 3,
+    "name": "Nobuo Uematsu",
     "games": [
         {
             "id": 6,
@@ -828,7 +943,39 @@ Optional keys for this endpoint:
             "id": 00,
             "name": "..."
         }
-    ],
+    ]
+}
+```
+
+## Albums by Artist
+
+### GET /artist/000/albums
+
+```json
+{
+    "id": 000,
+    "name": "Artist Name",
+    "albums": [
+        {
+            "id": 00,
+            "name": "remix album"
+        },
+        {
+            "id": 00,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/artist/3/albums`
+
+```json
+{
+    "id": 3,
+    "name": "Nobuo Uematsu",
     "albums": [
         {
             "id": 1,
@@ -842,7 +989,39 @@ Optional keys for this endpoint:
             "id": 00,
             "name": "..."
         }
-    ],
+    ]
+}
+```
+
+## Remixes by Artist
+
+### GET /artist/000/remixes
+
+```json
+{
+    "id": 000,
+    "name": "Artist Name",
+    "remixes": [
+        {
+            "id": "OCR00000",
+            "title": "mix title"
+        },
+        {
+            "id": "OCR00000",
+            "title": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/artist/3/remixes`
+
+```json
+{
+    "id": 3,
+    "name": "Nobuo Uematsu",
     "remixes": [
         {
             "id": "OCR02885",
@@ -895,14 +1074,6 @@ Optional keys for this endpoint:
 }
 ```
 
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| chiptune (root) | http://ocremix.org/chip/ `id` |
-| `game` | http://ocremix.org/game/ `game.id` |
-| `composers` | http://ocremix.org/artist/ `composers[x].id` |
-
 ### Example
 
 `curl http://ocremix.org/api/v1/chiptune/6384`
@@ -948,60 +1119,9 @@ Optional keys for this endpoint:
         "http://www.gamefaqs.com/...",
         "http://www.uvlist.net/...",
         "http://en.wikipedia.org/wiki/..."
-    ],
-    "composers": [
-        {
-            "id": 0000,
-            "name": "Composer"
-        },
-        {
-            "id": 0000,
-            "name": "..."
-        }
-    ],
-    "games": [
-        {
-            "id": 0000,
-            "name": "Video Game"
-        },
-        {
-            "id": 0000,
-            "name": "..."
-        }
-    ],
-    "albums": [
-        {
-            "id": 00,
-            "name": "remix album"
-        },
-        {
-            "id": 00,
-            "name": "..."
-        }
-    ],
-    "remixes": [
-        {
-            "id": "OCR00000",
-            "title": "mix title"
-        },
-        {
-            "id": "OCR00000",
-            "title": "..."
-        }
     ]
 }
 ```
-
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| system (root) | http://ocremix.org/system/ `id` |
-| `publisher` | http://ocremix.org/org/ `publisher.id` |
-| `composers` | http://ocremix.org/artist/ `composers[x].id` |
-| `games` | http://ocremix.org/game/ `games[x].id` |
-| `albums` | http://ocremix.org/album/ `albums[x].id` |
-| `remixes` | http://ocremix.org/remix/ `remixes[x].id` |
 
 ### Example
 
@@ -1020,7 +1140,39 @@ Optional keys for this endpoint:
         "http://www.gamefaqs.com/console/snes/",
         "http://www.uvlist.net/platforms/detail/6-SNES",
         "http://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System"
-    ],
+    ]
+}
+```
+
+## Composers by System
+
+### GET /system/xxxx/composers
+
+```json
+{
+    "id": "xxxx",
+    "name": "System",
+    "composers": [
+        {
+            "id": 0000,
+            "name": "Composer"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/system/snes/composers`
+
+```json
+{
+    "id": "snes",
+    "name": "SNES",
     "composers": [
         {
             "id": 2,
@@ -1034,7 +1186,39 @@ Optional keys for this endpoint:
             "id": 0000,
             "name": "..."
         }
-    ],
+    ]
+}
+```
+
+## Games by System
+
+### GET /system/xxxx/games
+
+```json
+{
+    "id": "xxxx",
+    "name": "System",
+    "games": [
+        {
+            "id": 0000,
+            "name": "Video Game"
+        },
+        {
+            "id": 0000,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/system/snes/games`
+
+```json
+{
+    "id": "snes",
+    "name": "SNES",
     "games": [
         {
             "id": 6,
@@ -1048,7 +1232,39 @@ Optional keys for this endpoint:
             "id": 0000,
             "name": "..."
         }
-    ],
+    ]
+}
+```
+
+## Albums by System
+
+### GET /system/xxxx/albums
+
+```json
+{
+    "id": "xxxx",
+    "name": "System",
+    "albums": [
+        {
+            "id": 00,
+            "name": "remix album"
+        },
+        {
+            "id": 00,
+            "name": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/system/snes/albums`
+
+```json
+{
+    "id": "snes",
+    "name": "SNES",
     "albums": [
         {
             "id": 46,
@@ -1058,7 +1274,39 @@ Optional keys for this endpoint:
             "id": 00,
             "name": "..."
         }
-    ],
+    ]
+}
+```
+
+## Remixes by System
+
+### GET /system/xxxx/remixes
+
+```json
+{
+    "id": "xxxx",
+    "name": "System",
+    "remixes": [
+        {
+            "id": "OCR00000",
+            "title": "mix title"
+        },
+        {
+            "id": "OCR00000",
+            "title": "..."
+        }
+    ]
+}
+```
+
+### Example
+
+`curl http://ocremix.org/api/v1/system/snes/remixes`
+
+```json
+{
+    "id": "snes",
+    "name": "SNES",
     "remixes": [
         {
             "id": "OCR02885",
@@ -1096,12 +1344,6 @@ Optional keys for this endpoint:
     ]
 }
 ```
-
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| organization (root) | http://ocremix.org/org/ `id` |
 
 ### Example
 
@@ -1141,13 +1383,6 @@ Optional keys for this endpoint:
     ]
 }
 ```
-
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| organization (root) | http://ocremix.org/org/ `id` |
-| `composers` | http://ocremix.org/artist/ `composers[x].id` |
 
 ### Example
 
@@ -1195,13 +1430,6 @@ Optional keys for this endpoint:
 }
 ```
 
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| organization (root) | http://ocremix.org/org/ `id` |
-| `games` | http://ocremix.org/game/ `games[x].id` |
-
 ### Example
 
 `curl http://ocremix.org/api/v1/org/2/games`
@@ -1248,13 +1476,6 @@ Optional keys for this endpoint:
 }
 ```
 
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| organization (root) | http://ocremix.org/org/ `id` |
-| `systems` | http://ocremix.org/system/ `systems[x].id` |
-
 ### Example
 
 `curl http://ocremix.org/api/v1/org/2/systems`
@@ -1297,13 +1518,6 @@ Optional keys for this endpoint:
 }
 ```
 
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| organization (root) | http://ocremix.org/org/ `id` |
-| `albums` | http://ocremix.org/album/ `albums[x].id` |
-
 ### Example
 
 `curl http://ocremix.org/api/v1/org/2/albums`
@@ -1345,13 +1559,6 @@ Optional keys for this endpoint:
     ]
 }
 ```
-
-### OCReMix.org URL conversions
-
-| Key | URL |
-| --- | --- |
-| organization (root) | http://ocremix.org/org/ `id` |
-| `remixes` | http://ocremix.org/remix/ `remixes[x].id` |
 
 ### Example
 
