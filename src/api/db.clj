@@ -1,17 +1,18 @@
 (ns api.db
   (:use [korma.core])
-  (:require [clojure.tools.logging :as log]
+  (:require [api.util.config :as config]
+            [clojure.tools.logging :as log]
             [korma.db :as db]))
 
 (defn- create-db-spec
   "Creates the database connection spec to use when accessing the database
    using Korma."
   []
-  {:classname   "org.postgresql.Driver"
-   :subprotocol "postgresql"
-   :subname     "//localhost:5432/ocremix"
-   :user        "ocremix"
-   :password    "*****"})
+  {:classname   (config/db-driver)
+   :subprotocol (config/db-subprotocol)
+   :subname     (str "//" (config/db-host) ":" (config/db-port) "/" (config/db-name))
+   :user        (config/db-user)
+   :password    (config/db-password)})
 
 (defn define-database
   "Defines the database connection to use from within Clojure."

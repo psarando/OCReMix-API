@@ -7,6 +7,7 @@
             [api.service.entities :as entities]
             [api.service.handlers :as handlers]
             [api.service.listings :as listings]
+            [api.util.config :as config]
             [clojure.tools.cli :as cli]
             [compojure.route :as route]
             [ring.adapter.jetty :as jetty]))
@@ -25,6 +26,7 @@
 
 (defn lein-ring-init
   []
+  (config/load-config-from-file)
   (db/define-database))
 
 (defn site-handler
