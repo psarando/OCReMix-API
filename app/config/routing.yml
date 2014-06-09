@@ -1,0 +1,16 @@
+NelmioApiDocBundle:
+  resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+  prefix:   /api/doc
+
+_welcome:
+    pattern:  /
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: get_remixes
+        permanent: true # this for 301
+
+_ocr_api:
+    resource: "@OcrApiBundle/Controller/ApiController.php"
+    type:     rest
+    defaults: {_format: json}
+    # prefix: /api/v1/

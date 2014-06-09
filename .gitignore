@@ -16,3 +16,10 @@ pom.xml.asc
 \#*
 .DS_Store
 *.swp
+/web/bundles/
+/app/cache/*
+/app/logs/*
+/build/
+/vendor/
+/bin/
+/composer.phar
