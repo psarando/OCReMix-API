@@ -59,7 +59,7 @@ Alternatively, the full URLs could be included for each entity, such as the foll
 
 ## Remixes
 
-### GET /remix/OCR00000
+### GET /remixes/OCR00000
 
 My idea with this endpoint is to return enough information to completely tag an mp3, but also to include the info found on each mixpost page (`http://ocremix.org/remix/OCR00000`), or at least include an ID for another endpoint that can fill in the rest of the info (e.g. `http://ocremix.org/game/ID`).
 
@@ -179,7 +179,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/remix/OCR02700`
+`curl http://ocremix.org/api/v1/remixes/OCR02700`
 
 ```json
 {
@@ -250,7 +250,7 @@ Optional keys for this endpoint:
 
 ## Source Songs
 
-### GET /song/0000
+### GET /songs/0000
 
 ```json
 {
@@ -290,7 +290,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/song/11`
+`curl http://ocremix.org/api/v1/songs/11`
 
 ```json
 {
@@ -322,7 +322,7 @@ Optional keys for this endpoint:
 
 ## Remixes by Song
 
-### GET /song/0000/remixes
+### GET /songs/0000/remixes
 
 ```json
 {
@@ -343,7 +343,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/song/11/remixes`
+`curl http://ocremix.org/api/v1/songs/11/remixes`
 
 ```json
 {
@@ -372,7 +372,7 @@ Optional keys for this endpoint:
 
 ## Games
 
-### GET /game/000
+### GET /games/000
 
 ```json
 {
@@ -433,7 +433,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/game/6`
+`curl http://ocremix.org/api/v1/games/6`
 
 ```json
 {
@@ -484,7 +484,7 @@ Optional keys for this endpoint:
 
 ## Songs by Game
 
-### GET /game/000/songs
+### GET /games/000/songs
 
 ```json
 {
@@ -505,7 +505,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/game/6/songs`
+`curl http://ocremix.org/api/v1/games/6/songs`
 
 ```json
 {
@@ -538,7 +538,7 @@ Optional keys for this endpoint:
 
 ## Albums by Game
 
-### GET /game/000/albums
+### GET /games/000/albums
 
 ```json
 {
@@ -559,7 +559,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/game/6/albums`
+`curl http://ocremix.org/api/v1/games/6/albums`
 
 ```json
 {
@@ -580,7 +580,7 @@ Optional keys for this endpoint:
 
 ## Remixes by Game
 
-### GET /game/000/remixes
+### GET /games/000/remixes
 
 ```json
 {
@@ -601,7 +601,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/game/6/remixes`
+`curl http://ocremix.org/api/v1/games/6/remixes`
 
 ```json
 {
@@ -630,7 +630,7 @@ Optional keys for this endpoint:
 
 ## Albums
 
-### GET /album/000
+### GET /albums/000
 
 ```json
 {
@@ -673,7 +673,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/album/46`
+`curl http://ocremix.org/api/v1/albums/46`
 
 ```json
 {
@@ -722,7 +722,7 @@ Optional keys for this endpoint:
 
 ## Composers by Album
 
-### GET /album/000/composers
+### GET /albums/000/composers
 
 ```json
 {
@@ -743,7 +743,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/album/46/composers`
+`curl http://ocremix.org/api/v1/albums/46/composers`
 
 ```json
 {
@@ -760,7 +760,7 @@ Optional keys for this endpoint:
 
 ## Remixes by Album
 
-### GET /album/000/remixes
+### GET /albums/000/remixes
 
 ```json
 {
@@ -781,7 +781,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/album/46/remixes`
+`curl http://ocremix.org/api/v1/albums/46/remixes`
 
 ```json
 {
@@ -810,7 +810,7 @@ Optional keys for this endpoint:
 
 ## Composers and Artists
 
-### GET /artist/000
+### GET /artists/000
 
 ```json
 {
@@ -859,7 +859,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/artist/3`
+`curl http://ocremix.org/api/v1/artists/3`
 
 ```json
 {
@@ -903,7 +903,7 @@ Optional keys for this endpoint:
 
 ## Games by Artist
 
-### GET /artist/000/games
+### GET /artists/000/games
 
 ```json
 {
@@ -924,7 +924,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/artist/3/games`
+`curl http://ocremix.org/api/v1/artists/3/games`
 
 ```json
 {
@@ -949,7 +949,7 @@ Optional keys for this endpoint:
 
 ## Albums by Artist
 
-### GET /artist/000/albums
+### GET /artists/000/albums
 
 ```json
 {
@@ -970,7 +970,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/artist/3/albums`
+`curl http://ocremix.org/api/v1/artists/3/albums`
 
 ```json
 {
@@ -995,7 +995,7 @@ Optional keys for this endpoint:
 
 ## Remixes by Artist
 
-### GET /artist/000/remixes
+### GET /artists/000/remixes
 
 ```json
 {
@@ -1016,7 +1016,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/artist/3/remixes`
+`curl http://ocremix.org/api/v1/artists/3/remixes`
 
 ```json
 {
@@ -1045,7 +1045,7 @@ Optional keys for this endpoint:
 
 ## Chiptunes
 
-### GET /chiptune/000
+### GET /chiptunes/000
 
 ```json
 {
@@ -1076,7 +1076,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/chiptune/6384`
+`curl http://ocremix.org/api/v1/chiptunes/6384`
 
 ```json
 {
@@ -1103,7 +1103,7 @@ Optional keys for this endpoint:
 
 ## Systems
 
-### GET /system/xxxx
+### GET /systems/xxxx
 
 ```json
 {
@@ -1125,7 +1125,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/system/snes`
+`curl http://ocremix.org/api/v1/systems/snes`
 
 ```json
 {
@@ -1146,7 +1146,7 @@ Optional keys for this endpoint:
 
 ## Composers by System
 
-### GET /system/xxxx/composers
+### GET /systems/xxxx/composers
 
 ```json
 {
@@ -1167,7 +1167,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/system/snes/composers`
+`curl http://ocremix.org/api/v1/systems/snes/composers`
 
 ```json
 {
@@ -1192,7 +1192,7 @@ Optional keys for this endpoint:
 
 ## Games by System
 
-### GET /system/xxxx/games
+### GET /systems/xxxx/games
 
 ```json
 {
@@ -1213,7 +1213,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/system/snes/games`
+`curl http://ocremix.org/api/v1/systems/snes/games`
 
 ```json
 {
@@ -1238,7 +1238,7 @@ Optional keys for this endpoint:
 
 ## Albums by System
 
-### GET /system/xxxx/albums
+### GET /systems/xxxx/albums
 
 ```json
 {
@@ -1259,7 +1259,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/system/snes/albums`
+`curl http://ocremix.org/api/v1/systems/snes/albums`
 
 ```json
 {
@@ -1280,7 +1280,7 @@ Optional keys for this endpoint:
 
 ## Remixes by System
 
-### GET /system/xxxx/remixes
+### GET /systems/xxxx/remixes
 
 ```json
 {
@@ -1301,7 +1301,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/system/snes/remixes`
+`curl http://ocremix.org/api/v1/systems/snes/remixes`
 
 ```json
 {
@@ -1330,7 +1330,7 @@ Optional keys for this endpoint:
 
 ## Organizations
 
-### GET /org/000
+### GET /orgs/000
 
 ```json
 {
@@ -1347,7 +1347,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/org/2`
+`curl http://ocremix.org/api/v1/orgs/2`
 
 ```json
 {
@@ -1365,7 +1365,7 @@ Optional keys for this endpoint:
 
 ## Composers by Organization
 
-### GET /org/000/artists
+### GET /orgs/000/artists
 
 ```json
 {
@@ -1386,7 +1386,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/org/2/artists`
+`curl http://ocremix.org/api/v1/orgs/2/artists`
 
 ```json
 {
@@ -1411,7 +1411,7 @@ Optional keys for this endpoint:
 
 ## Games by Organization
 
-### GET /org/000/games
+### GET /orgs/000/games
 
 ```json
 {
@@ -1432,7 +1432,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/org/2/games`
+`curl http://ocremix.org/api/v1/orgs/2/games`
 
 ```json
 {
@@ -1457,7 +1457,7 @@ Optional keys for this endpoint:
 
 ## Systems by Organization
 
-### GET /org/000/systems
+### GET /orgs/000/systems
 
 ```json
 {
@@ -1478,7 +1478,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/org/2/systems`
+`curl http://ocremix.org/api/v1/orgs/2/systems`
 
 ```json
 {
@@ -1499,7 +1499,7 @@ Optional keys for this endpoint:
 
 ## Albums by Organization
 
-### GET /org/000/albums
+### GET /orgs/000/albums
 
 ```json
 {
@@ -1520,7 +1520,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/org/2/albums`
+`curl http://ocremix.org/api/v1/orgs/2/albums`
 
 ```json
 {
@@ -1541,7 +1541,7 @@ Optional keys for this endpoint:
 
 ## Remixes by Organization
 
-### GET /org/000/remixes
+### GET /orgs/000/remixes
 
 ```json
 {
@@ -1562,7 +1562,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/org/2/remixes`
+`curl http://ocremix.org/api/v1/orgs/2/remixes`
 
 ```json
 {
