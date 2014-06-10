@@ -19,7 +19,7 @@
   (GET "/remixes" [:as request]
        (service/trap #(listings/get-remixes request)))
 
-  (GET "/remix/:remix-id" [remix-id]
+  (GET "/remixes/:remix-id" [remix-id]
        (service/trap #(entities/get-remix remix-id)))
 
   (route/not-found (service/unrecognized-path-response)))
