@@ -35,16 +35,29 @@ class ApiController extends FOSRestController
      * )
      *
      * @Annotations\QueryParam(
-     *      name="offset",
-     *      requirements="\d+",
-     *      nullable=true,
-     *      description="Offset from which to start listing remixes."
-     *  )
-     * @Annotations\QueryParam(
      *      name="limit",
      *      requirements="\d+",
      *      default="50",
-     *      description="How many remixes to return.")
+     *      description="How many remixes to return."
+     * )
+     * @Annotations\QueryParam(
+     *      name="offset",
+     *      requirements="\d+",
+     *      default="0",
+     *      description="Offset from which to start listing remixes."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-order",
+     *      requirements="id|title|year|size",
+     *      default="id",
+     *      description="The field by which to sort remixes."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-dir",
+     *      requirements="ASC|DESC",
+     *      default="DESC",
+     *      description="The direction in which to sort remixes."
+     *  )
      *
      * @param Request               $request      the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
@@ -56,12 +69,33 @@ class ApiController extends FOSRestController
         $data = new Data($this->get('database_connection'));
         $this->data = $data;
 
-        $offset = $paramFetcher->get('offset');
-        $limit = $paramFetcher->get('limit');
+        $limit = intval($paramFetcher->get('limit'));
+        $offset = intval($paramFetcher->get('offset'));
+        $sortOrder = strtolower($paramFetcher->get('sort-order'));
+        $sortDir = strtoupper($paramFetcher->get('sort-dir'));
+        $validSortFields = array('id', 'title', 'year', 'size');
 
-        $remixes = $data->getRemixes($offset, $limit);
+        if ($limit < 1) {
+            $limit = 50;
+        }
+        if ($offset < 0) {
+            $offset = 0;
+        }
+        if (!in_array($sortOrder, $validSortFields)) {
+            $sortOrder = "id";
+        }
+        if ($sortDir != "ASC") {
+            $sortDir = "DESC";
+        }
 
-        return array_map(array($this, 'formatRemixListing'), $remixes);
+        $remixes = $data->getRemixes($limit, $offset, $sortOrder, $sortDir);
+        $remixes = array_map(array($this, 'formatRemixListing'), $remixes);
+
+        return array(
+            'remixes' => $remixes,
+            'limit' => $limit,
+            'offset' => $offset,
+        );
     }
 
     private function formatRemixListing($remix)
@@ -118,7 +152,7 @@ class ApiController extends FOSRestController
      * )
      *
      * @param Request $request the request object
-     * @param int     $id      the remix id
+     * @param string  $id      the remix id
      *
      * @return array
      *

@@ -17,9 +17,9 @@ class Data
         $this->db = $db;
     }
 
-    public function getRemixes($offset, $limit)
+    public function getRemixes($limit, $offset, $sortOrder, $sortDir)
     {
-        return $this->db->fetchAll('SELECT * FROM remixes');
+        return $this->db->fetchAll("SELECT * FROM remixes ORDER BY $sortOrder $sortDir LIMIT $limit OFFSET $offset");
     }
 
     public function getRemix($remix_id)
