@@ -16,8 +16,8 @@
   (GET "/" []
        "Welcome to OCR API v0.1!\n")
 
-  (GET "/remixes" [:as request]
-       (service/trap #(listings/get-remixes request)))
+  (GET "/remixes" [:as {params :params}]
+       (service/trap #(listings/get-remixes params)))
 
   (GET "/remixes/:remix-id" [remix-id]
        (service/trap #(entities/get-remix remix-id)))

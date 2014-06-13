@@ -21,8 +21,11 @@
   (db/default-connection ocr))
 
 (defn fetch-remixes
-  []
-  (select :remixes))
+  [result-limit start sort-field sort-dir]
+  (select :remixes
+          (order sort-field sort-dir)
+          (limit result-limit)
+          (offset start)))
 
 (defn fetch-remix
   [id]

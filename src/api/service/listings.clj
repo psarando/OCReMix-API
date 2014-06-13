@@ -1,7 +1,20 @@
 (ns api.service.listings
   (:require [api.db :as db]
             [api.util.date :as date]
+            [api.util.param :as param]
             [clojure.tools.logging :as log]))
+
+(def ^:private remix-sort-fields #{:id :title :year :size})
+
+(defn- parse-params
+  [params valid-sort-fields default-sort-field]
+  (let [limit (param/string-to-int (:limit params) 50)
+        offset (param/string-to-int (:offset params) 0)
+        sort-dir (param/parse-sort-dir (:sort-dir params))
+        sort-field (param/parse-sort-field (:sort-order params)
+                                           valid-sort-fields
+                                           default-sort-field)]
+    [limit offset sort-field sort-dir]))
 
 (defn- date-to-year
   [m]
@@ -44,8 +57,8 @@
         (dissoc :year :comment :lyrics :encoder :size :md5 :torrent))))
 
 (defn get-remixes
-  [request]
-  (let [remixes (db/fetch-remixes)]
-    (log/info remixes)
+  [params]
+  (let [[limit offset sort-field sort-dir] (parse-params params remix-sort-fields :id)
+        remixes (db/fetch-remixes limit offset sort-field sort-dir)]
     {:remixes (map format-remix remixes)}))
 
