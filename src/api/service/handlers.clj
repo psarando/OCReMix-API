@@ -14,7 +14,7 @@
    (map? target)    (into {} (for [[k v] target]
                                [(if (string? k)
                                   (string/lower-case k)
-                                  (keyword (string/lower-case k)))
+                                  (keyword (string/lower-case (name k))))
                                 (lcase-params v)]))
    (vector? target) (mapv lcase-params target)
    :else            target))
