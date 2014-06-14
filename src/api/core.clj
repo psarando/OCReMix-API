@@ -3,8 +3,10 @@
   (:use [compojure.core]
         [ring.middleware params keyword-params])
   (:require [api.db :as db]
+            [api.entities.game :as game]
             [api.entities.remix :as remix]
             [api.entities.song :as song]
+            [api.listings.games :as games]
             [api.listings.remixes :as remixes]
             [api.listings.songs :as songs]
             [api.service :as service]
@@ -32,6 +34,21 @@
 
   (GET "/songs/:song-id/remixes" [song-id]
        (service/trap #(song/get-song-remixes song-id)))
+
+  (GET "/games" [:as {params :params}]
+       (service/trap #(games/get-games params)))
+
+  (GET "/games/:game-id" [game-id]
+       (service/trap #(game/get-game game-id)))
+
+  (GET "/games/:game-id/songs" [game-id]
+       (service/trap #(game/get-game-songs game-id)))
+
+  (GET "/games/:game-id/albums" [game-id]
+       (service/trap #(game/get-game-albums game-id)))
+
+  (GET "/games/:game-id/remixes" [game-id]
+       (service/trap #(game/get-game-remixes game-id)))
 
   (route/not-found (service/unrecognized-path-response)))
 
