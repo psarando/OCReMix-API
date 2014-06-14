@@ -5,6 +5,7 @@ CREATE TABLE albums (
   name text NOT NULL,
   torrent varchar,
   catalog text,
+  publisher bigint NOT NULL,
   release_date char(10),
   media varchar,
   vgmdb_id bigint,
