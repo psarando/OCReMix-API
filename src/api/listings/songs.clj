@@ -1,8 +1,6 @@
 (ns api.listings.songs
   (:require [api.db :as db]
-            [api.util.date :as date]
-            [api.util.param :as param]
-            [clojure.tools.logging :as log]))
+            [api.util.param :as param]))
 
 (def ^:private song-sort-fields #{:id :name})
 
