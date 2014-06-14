@@ -1,0 +1,19 @@
+(ns api.listings.songs
+  (:require [api.db :as db]
+            [api.util.date :as date]
+            [api.util.param :as param]
+            [clojure.tools.logging :as log]))
+
+(def ^:private song-sort-fields #{:id :name})
+
+(defn- format-song
+  [song]
+  (let [game (db/fetch-id-name :games (:game song))]
+    (assoc song :game game)))
+
+(defn get-songs
+  [params]
+  (let [[limit offset sort-field sort-dir] (param/parse-paging-params params song-sort-fields :id)
+        songs (db/fetch-songs limit offset sort-field sort-dir)]
+    {:songs (map format-song songs)}))
+

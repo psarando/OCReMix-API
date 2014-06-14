@@ -27,6 +27,13 @@
           (limit result-limit)
           (offset start)))
 
+(defn fetch-songs
+  [result-limit start sort-field sort-dir]
+  (select :songs
+          (order sort-field sort-dir)
+          (limit result-limit)
+          (offset start)))
+
 (defn fetch-remix
   [id]
   (first
@@ -38,6 +45,12 @@
   (first
    (select :mixposts
            (where {:remix_id id}))))
+
+(defn fetch-song
+  [id]
+  (first
+   (select :songs
+           (where {:id id}))))
 
 (defn fetch-album
   [id]
@@ -112,6 +125,16 @@
                 {:rs.remix_id :r.id})
           (where {:r.id id})))
 
+(defn fetch-song-remixes
+  [id]
+  (select [:remixes :r]
+          (fields :r.id :r.title)
+          (join [:remix_song :rs]
+                {:rs.remix_id :r.id})
+          (join [:songs :s]
+                {:s.id :rs.song_id})
+          (where {:s.id id})))
+
 (defn fetch-song-composers
   [id]
   (select [:artists :a]
@@ -121,4 +144,22 @@
           (join [:songs :s]
                 {:cs.song_id :s.id})
           (where {:s.id id})))
+
+(defn fetch-song-ost-names
+  [song-id]
+  (select :song_ost_name
+          (fields :name)
+          (where {:song_id song-id})))
+
+(defn fetch-song-aliases
+  [song-id]
+  (select :song_alias
+          (fields :alias)
+          (where {:song_id song-id})))
+
+(defn fetch-game-chiptunes
+  [game-id]
+  (select :chiptunes
+          (fields :id :name :size)
+          (where {:game_id game-id})))
 
