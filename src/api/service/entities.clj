@@ -1,17 +1,12 @@
 (ns api.service.entities
   (:use [slingshot.slingshot :only [throw+]])
   (:require [api.db :as db]
-            [api.util.date :as date]
-            [clojure.tools.logging :as log]))
+            [api.util.date :as date]))
 
 (defn- date-to-year
   [m]
   (when (and m (:year m))
     (assoc m :year (date/date-to-year (:year m)))))
-
-(defn- filter-id-name
-  [m]
-  (select-keys m [:id :name]))
 
 (defn- format-game-info
   [game]
@@ -41,33 +36,23 @@
         artists (db/fetch-remix-artists remix-id)
         album-id (:album remix)
         album (when album-id
-                (db/fetch-album album-id))
+                (db/fetch-id-name :albums album-id))
         download-urls (db/fetch-remix-downloads remix-id)
         songs (db/fetch-remix-songs remix-id)
         composers (when (seq songs)
                     (mapcat db/fetch-song-composers (map :id songs)))
         game (db/fetch-game (:game remix))
-        publisher (db/fetch-org (:publisher game))
-        system (db/fetch-system (:system game))]
-    (log/info remix)
-    (log/info mixpost)
-    (log/info artists)
-    (log/info album)
-    (log/info download-urls)
-    (log/info songs)
-    (log/info composers)
-    (log/info game)
-    (log/info publisher)
-    (log/info system)
+        publisher (db/fetch-id-name :organizations (:publisher game))
+        system (db/fetch-id-name :systems (:system game))]
     (-> remix
         (date-to-year)
         (assoc :artists artists)
         (assoc :composers composers)
         (assoc :songs songs)
         (assoc :game (format-game-info game))
-        (assoc :publisher (filter-id-name publisher))
-        (assoc :system (filter-id-name system))
-        (assoc :album (filter-id-name album))
+        (assoc :publisher publisher)
+        (assoc :system system)
+        (assoc :album album)
         (assoc :download (format-download-info remix download-urls))
         (dissoc :size :md5 :torrent)
         (assoc :mixpost (format-mixpost mixpost)))))

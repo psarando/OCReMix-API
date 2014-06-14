@@ -21,10 +21,6 @@
   (when (and m (:year m))
     (assoc m :year (date/date-to-year (:year m)))))
 
-(defn- filter-id-name
-  [m]
-  (select-keys m [:id :name]))
-
 (defn- format-game-info
   [game]
   (-> game
@@ -38,21 +34,21 @@
         artists (db/fetch-remix-artists remix-id)
         album-id (:album remix)
         album (when album-id
-                (db/fetch-album album-id))
+                (db/fetch-id-name :albums album-id))
         songs (db/fetch-remix-songs remix-id)
         composers (when (seq songs)
                     (mapcat db/fetch-song-composers (map :id songs)))
         game (db/fetch-game (:game remix))
-        publisher (db/fetch-org (:publisher game))
-        system (db/fetch-system (:system game))]
+        publisher (db/fetch-id-name :organizations (:publisher game))
+        system (db/fetch-id-name :systems (:system game))]
     (-> remix
         (assoc :artists artists)
         (assoc :composers composers)
         (assoc :songs songs)
         (assoc :game (format-game-info game))
-        (assoc :publisher (filter-id-name publisher))
-        (assoc :system (filter-id-name system))
-        (assoc :album (filter-id-name album))
+        (assoc :publisher publisher)
+        (assoc :system system)
+        (assoc :album album)
         (assoc :date (date/format-date (:posted mixpost)))
         (dissoc :year :comment :lyrics :encoder :size :md5 :torrent))))
 

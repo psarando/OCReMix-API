@@ -69,6 +69,13 @@
    (select :systems
            (where {:id id}))))
 
+(defn fetch-id-name
+  [table id]
+  (first
+   (select table
+           (fields :id :name)
+           (where {:id id}))))
+
 (defn fetch-remix-artists
   [id]
   (select [:artists :a]
