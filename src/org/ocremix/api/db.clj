@@ -102,9 +102,7 @@
           (fields :a.id :a.name)
           (join [:remix_artist :ra]
                 {:a.id :ra.artist_id})
-          (join [:remixes :r]
-                {:ra.remix_id :r.id})
-          (where {:r.id id})))
+          (where {:ra.remix_id id})))
 
 (defn fetch-remix-downloads
   [id]
@@ -118,9 +116,7 @@
           (fields :a.id :a.name)
           (join [:mixpost_evaluator :me]
                 {:a.id :me.artist_id})
-          (join [:remixes :r]
-                {:me.remix_id :r.id})
-          (where {:r.id id})))
+          (where {:me.remix_id id})))
 
 (defn fetch-remix-songs
   [id]
@@ -128,9 +124,7 @@
           (fields :s.id :s.name)
           (join [:remix_song :rs]
                 {:s.id :rs.song_id})
-          (join [:remixes :r]
-                {:rs.remix_id :r.id})
-          (where {:r.id id})))
+          (where {:rs.remix_id id})))
 
 (defn fetch-song-remixes
   [id]
@@ -138,9 +132,7 @@
           (fields :r.id :r.title)
           (join [:remix_song :rs]
                 {:rs.remix_id :r.id})
-          (join [:songs :s]
-                {:s.id :rs.song_id})
-          (where {:s.id id})))
+          (where {:rs.song_id id})))
 
 (defn fetch-song-composers
   [id]
@@ -148,9 +140,7 @@
           (fields :a.id :a.name)
           (join [:composer_song :cs]
                 {:a.id :cs.composer_id})
-          (join [:songs :s]
-                {:cs.song_id :s.id})
-          (where {:s.id id})))
+          (where {:cs.song_id id})))
 
 (defn fetch-song-ost-names
   [song-id]
@@ -180,9 +170,7 @@
           (fields :a.id :a.name)
           (join [:album_game :ag]
                 {:ag.album_id :a.id})
-          (join [:games :g]
-                {:g.id :ag.game_id})
-          (where {:g.id game-id})))
+          (where {:ag.game_id game-id})))
 
 (defn fetch-game-remixes
   [game-id]
