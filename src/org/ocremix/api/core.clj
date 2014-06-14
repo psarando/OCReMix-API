@@ -1,17 +1,17 @@
-(ns api.core
+(ns org.ocremix.api.core
   (:gen-class)
   (:use [compojure.core]
         [ring.middleware params keyword-params])
-  (:require [api.db :as db]
-            [api.entities.game :as game]
-            [api.entities.remix :as remix]
-            [api.entities.song :as song]
-            [api.listings.games :as games]
-            [api.listings.remixes :as remixes]
-            [api.listings.songs :as songs]
-            [api.service :as service]
-            [api.service.handlers :as handlers]
-            [api.util.config :as config]
+  (:require [org.ocremix.api.db :as db]
+            [org.ocremix.api.entities.game :as game]
+            [org.ocremix.api.entities.remix :as remix]
+            [org.ocremix.api.entities.song :as song]
+            [org.ocremix.api.listings.games :as games]
+            [org.ocremix.api.listings.remixes :as remixes]
+            [org.ocremix.api.listings.songs :as songs]
+            [org.ocremix.api.service :as service]
+            [org.ocremix.api.service.handlers :as handlers]
+            [org.ocremix.api.util.config :as config]
             [clojure.tools.cli :as cli]
             [compojure.route :as route]
             [ring.adapter.jetty :as jetty]))

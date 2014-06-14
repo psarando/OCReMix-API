@@ -1,4 +1,4 @@
-(ns api.service
+(ns org.ocremix.api.service
   (:use [slingshot.slingshot :only [try+]])
   (:require [cheshire.core :as cheshire]
             [clojure.tools.logging :as log]))

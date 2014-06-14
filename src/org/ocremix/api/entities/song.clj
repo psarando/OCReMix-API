@@ -1,7 +1,7 @@
-(ns api.entities.song
+(ns org.ocremix.api.entities.song
   (:use [slingshot.slingshot :only [throw+]])
-  (:require [api.db :as db]
-            [api.util.param :as param]))
+  (:require [org.ocremix.api.db :as db]
+            [org.ocremix.api.util.param :as param]))
 
 (defn- format-song
   [song]

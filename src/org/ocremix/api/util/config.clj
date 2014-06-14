@@ -1,4 +1,4 @@
-(ns api.util.config
+(ns org.ocremix.api.util.config
   (:use [clojure.java.io :only (file input-stream)])
   (:require [clojure.tools.logging :as log]
             [me.raynes.fs :as fs])

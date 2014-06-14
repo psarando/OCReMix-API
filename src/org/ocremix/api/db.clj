@@ -1,6 +1,6 @@
-(ns api.db
+(ns org.ocremix.api.db
   (:use [korma.core])
-  (:require [api.util.config :as config]
+  (:require [org.ocremix.api.util.config :as config]
             [clojure.tools.logging :as log]
             [korma.db :as db]))
 

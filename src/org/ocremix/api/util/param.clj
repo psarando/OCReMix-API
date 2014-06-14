@@ -1,4 +1,4 @@
-(ns api.util.param
+(ns org.ocremix.api.util.param
   (:require [clojure.string :as string]))
 
 (defn string-to-int

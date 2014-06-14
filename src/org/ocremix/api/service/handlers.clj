@@ -1,4 +1,4 @@
-(ns api.service.handlers
+(ns org.ocremix.api.service.handlers
   (:require [clojure.string :as string]
             [clojure.tools.logging :as log]))
 

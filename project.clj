@@ -19,10 +19,10 @@
                  [org.clojure/tools.logging "0.2.6"]
                  [postgresql "9.0-801.jdbc4"]]
   :plugins [[lein-ring "0.8.8"]]
-  :aot [api.core]
-  :main api.core
-  :ring {:handler api.core/app
-         :init api.core/lein-ring-init
+  :aot [org.ocremix.api.core]
+  :main org.ocremix.api.core
+  :ring {:handler org.ocremix.api.core/app
+         :init org.ocremix.api.core/lein-ring-init
          :port 8080}
   :uberjar-exclusions [#".*[.]SF" #"LICENSE" #"NOTICE"])
 

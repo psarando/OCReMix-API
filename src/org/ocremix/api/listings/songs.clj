@@ -1,6 +1,6 @@
-(ns api.listings.songs
-  (:require [api.db :as db]
-            [api.util.param :as param]))
+(ns org.ocremix.api.listings.songs
+  (:require [org.ocremix.api.db :as db]
+            [org.ocremix.api.util.param :as param]))
 
 (def ^:private song-sort-fields #{:id :name})
 

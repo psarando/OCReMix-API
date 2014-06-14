@@ -1,8 +1,8 @@
-(ns api.entities.game
+(ns org.ocremix.api.entities.game
   (:use [slingshot.slingshot :only [throw+]])
-  (:require [api.db :as db]
-            [api.util.date :as date]
-            [api.util.param :as param]))
+  (:require [org.ocremix.api.db :as db]
+            [org.ocremix.api.util.date :as date]
+            [org.ocremix.api.util.param :as param]))
 
 (defn- get-game-info
   [id fetch-info-fn format-fn]

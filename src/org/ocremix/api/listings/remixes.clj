@@ -1,7 +1,7 @@
-(ns api.listings.remixes
-  (:require [api.db :as db]
-            [api.util.date :as date]
-            [api.util.param :as param]))
+(ns org.ocremix.api.listings.remixes
+  (:require [org.ocremix.api.db :as db]
+            [org.ocremix.api.util.date :as date]
+            [org.ocremix.api.util.param :as param]))
 
 (def ^:private remix-sort-fields #{:id :title :year :size})
 

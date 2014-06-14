@@ -1,4 +1,4 @@
-(ns api.util.date
+(ns org.ocremix.api.util.date
   (:require [clj-time.coerce :as dt-coerce]
             [clj-time.core :as dt]
             [clj-time.format :as dt-format]))

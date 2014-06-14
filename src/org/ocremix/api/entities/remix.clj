@@ -1,7 +1,7 @@
-(ns api.entities.remix
+(ns org.ocremix.api.entities.remix
   (:use [slingshot.slingshot :only [throw+]])
-  (:require [api.db :as db]
-            [api.util.date :as date]))
+  (:require [org.ocremix.api.db :as db]
+            [org.ocremix.api.util.date :as date]))
 
 (defn- date-to-year
   [m]

@@ -1,7 +1,7 @@
-(ns api.listings.games
-  (:require [api.db :as db]
-            [api.util.date :as date]
-            [api.util.param :as param]))
+(ns org.ocremix.api.listings.games
+  (:require [org.ocremix.api.db :as db]
+            [org.ocremix.api.util.date :as date]
+            [org.ocremix.api.util.param :as param]))
 
 (def ^:private game-sort-fields #{:id :name :name_short :name_jp :year :system})
 
