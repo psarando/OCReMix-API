@@ -4,6 +4,15 @@
             [api.util.date :as date]
             [api.util.param :as param]))
 
+(defn- get-game-info
+  [id fetch-info-fn format-fn]
+  (let [game-id (param/string-to-int id nil)
+        game (when game-id (fetch-info-fn game-id))]
+    (if game
+        (format-fn game)
+        (throw+ {:status 404
+                 :body (str "Game ID not found: " id)}))))
+
 (defn- format-game
   [game]
   (let [game-id (:id game)
@@ -41,37 +50,17 @@
 
 (defn get-game-remixes
   [id]
-  (let [game-id (param/string-to-int id nil)
-        game (when game-id (db/fetch-id-name :games game-id))]
-    (if game
-        (format-game-remixes game)
-        (throw+ {:status 404
-                 :body (str "Game ID not found: " id)}))))
+  (get-game-info id (partial db/fetch-id-name :games) format-game-remixes))
 
 (defn get-game-albums
   [id]
-  (let [game-id (param/string-to-int id nil)
-        game (when game-id (db/fetch-id-name :games game-id))]
-    (if game
-        (format-game-albums game)
-        (throw+ {:status 404
-                 :body (str "Game ID not found: " id)}))))
+  (get-game-info id (partial db/fetch-id-name :games) format-game-albums))
 
 (defn get-game-songs
   [id]
-  (let [game-id (param/string-to-int id nil)
-        game (when game-id (db/fetch-id-name :games game-id))]
-    (if game
-        (format-game-songs game)
-        (throw+ {:status 404
-                 :body (str "Game ID not found: " id)}))))
+  (get-game-info id (partial db/fetch-id-name :games) format-game-songs))
 
 (defn get-game
   [id]
-  (let [game-id (param/string-to-int id nil)
-        game (when game-id (db/fetch-game game-id))]
-    (if game
-        (format-game game)
-        (throw+ {:status 404
-                 :body (str "Game ID not found: " id)}))))
+  (get-game-info id db/fetch-game format-game))
 
