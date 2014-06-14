@@ -3,10 +3,10 @@
   (:use [compojure.core]
         [ring.middleware params keyword-params])
   (:require [api.db :as db]
+            [api.entities.remix :as remix]
+            [api.listings.remixes :as remixes]
             [api.service :as service]
-            [api.service.entities :as entities]
             [api.service.handlers :as handlers]
-            [api.service.listings :as listings]
             [api.util.config :as config]
             [clojure.tools.cli :as cli]
             [compojure.route :as route]
@@ -17,10 +17,10 @@
        "Welcome to OCR API v0.1!\n")
 
   (GET "/remixes" [:as {params :params}]
-       (service/trap #(listings/get-remixes params)))
+       (service/trap #(remixes/get-remixes params)))
 
   (GET "/remixes/:remix-id" [remix-id]
-       (service/trap #(entities/get-remix remix-id)))
+       (service/trap #(remix/get-remix remix-id)))
 
   (route/not-found (service/unrecognized-path-response)))
 

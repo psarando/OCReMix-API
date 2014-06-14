@@ -26,3 +26,16 @@
   (if (and sort-dir (= (string/upper-case sort-dir) "ASC"))
     :ASC
     :DESC))
+
+(defn parse-paging-params
+  "Parses valid limit, offset, sort-field, and sort-dir values from the given request params and
+   valid/default sort fields."
+  [params valid-sort-fields default-sort-field]
+  (let [limit (string-to-int (:limit params) 50)
+        offset (string-to-int (:offset params) 0)
+        sort-dir (parse-sort-dir (:sort-dir params))
+        sort-field (parse-sort-field (:sort-order params)
+                                     valid-sort-fields
+                                     default-sort-field)]
+    [limit offset sort-field sort-dir]))
+

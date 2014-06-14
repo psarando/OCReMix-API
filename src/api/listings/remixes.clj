@@ -1,7 +1,9 @@
-(ns api.service.entities
-  (:use [slingshot.slingshot :only [throw+]])
+(ns api.listings.remixes
   (:require [api.db :as db]
-            [api.util.date :as date]))
+            [api.util.date :as date]
+            [api.util.param :as param]))
+
+(def ^:private remix-sort-fields #{:id :title :year :size})
 
 (defn- date-to-year
   [m]
@@ -14,21 +16,6 @@
       (date-to-year)
       (dissoc :name_jp :publisher :system)))
 
-(defn- format-download-info
-  [remix download-urls]
-  (-> remix
-      (select-keys [:size :md5 :torrent])
-      (assoc :links (map :url download-urls))))
-
-(defn- format-mixpost
-  [mixpost]
-  (-> mixpost
-      (assoc :posted (date/format-date (:posted mixpost)))
-      (assoc :evaluators (db/fetch-mixpost-evaluators (:remix_id mixpost)))
-      (assoc :forum_comments (:forum_link mixpost))
-      (dissoc :forum_link)
-      (dissoc :remix_id)))
-
 (defn- format-remix
   [remix]
   (let [remix-id (:id remix)
@@ -37,7 +24,6 @@
         album-id (:album remix)
         album (when album-id
                 (db/fetch-id-name :albums album-id))
-        download-urls (db/fetch-remix-downloads remix-id)
         songs (db/fetch-remix-songs remix-id)
         composers (when (seq songs)
                     (mapcat db/fetch-song-composers (map :id songs)))
@@ -45,7 +31,6 @@
         publisher (db/fetch-id-name :organizations (:publisher game))
         system (db/fetch-id-name :systems (:system game))]
     (-> remix
-        (date-to-year)
         (assoc :artists artists)
         (assoc :composers composers)
         (assoc :songs songs)
@@ -53,15 +38,12 @@
         (assoc :publisher publisher)
         (assoc :system system)
         (assoc :album album)
-        (assoc :download (format-download-info remix download-urls))
-        (dissoc :size :md5 :torrent)
-        (assoc :mixpost (format-mixpost mixpost)))))
+        (assoc :date (date/format-date (:posted mixpost)))
+        (dissoc :year :comment :lyrics :encoder :size :md5 :torrent))))
 
-(defn get-remix
-  [remix-id]
-  (let [remix (db/fetch-remix remix-id)]
-    (if remix
-        (format-remix remix)
-        (throw+ {:status 404
-                 :body (str "Remix ID not found: " remix-id)}))))
+(defn get-remixes
+  [params]
+  (let [[limit offset sort-field sort-dir] (param/parse-paging-params params remix-sort-fields :id)
+        remixes (db/fetch-remixes limit offset sort-field sort-dir)]
+    {:remixes (map format-remix remixes)}))
 
