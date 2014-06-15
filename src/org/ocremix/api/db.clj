@@ -55,6 +55,13 @@
           (limit result-limit)
           (offset start)))
 
+(defn fetch-chiptunes
+  [result-limit start sort-field sort-dir]
+  (select :chiptunes
+          (order sort-field sort-dir)
+          (limit result-limit)
+          (offset start)))
+
 (defn fetch-remix
   [id]
   (first
@@ -71,6 +78,12 @@
   [id]
   (first
    (select :songs
+           (where {:id id}))))
+
+(defn fetch-chiptune
+  [id]
+  (first
+   (select :chiptunes
            (where {:id id}))))
 
 (defn fetch-album
