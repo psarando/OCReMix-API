@@ -197,6 +197,7 @@
                 {:a.id :cs.composer_id})
           (join [:songs :s]
                 {:cs.song_id :s.id})
+          (group :a.id :a.name)
           (where {:s.game game-id})))
 
 (defn fetch-game-art
