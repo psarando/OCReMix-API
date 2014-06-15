@@ -250,7 +250,7 @@
   [game-id]
   (select :chiptunes
           (fields :id :name :size)
-          (where {:game_id game-id})))
+          (where {:game game-id})))
 
 (defn fetch-album-games
   [album-id]
