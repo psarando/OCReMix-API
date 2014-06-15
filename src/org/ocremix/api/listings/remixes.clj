@@ -1,7 +1,7 @@
 (ns org.ocremix.api.listings.remixes
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.date :as date]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.listings :as listings]
+            [org.ocremix.api.util.date :as date]))
 
 (def ^:private remix-sort-fields #{:id :title :year :size})
 
@@ -42,7 +42,6 @@
 
 (defn get-remixes
   [params]
-  (let [[limit offset sort-field sort-dir] (param/parse-paging-params params remix-sort-fields :id)
-        remixes (db/fetch-remixes limit offset sort-field sort-dir)]
+  (let [remixes (listings/get-listing :remixes params remix-sort-fields :id)]
     {:remixes (map format-remix remixes)}))
 

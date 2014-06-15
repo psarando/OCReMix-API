@@ -1,7 +1,7 @@
 (ns org.ocremix.api.listings.systems
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.date :as date]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.listings :as listings]
+            [org.ocremix.api.util.date :as date]))
 
 (def ^:private system-sort-fields #{:id :name :name_jp :year :release_date})
 
@@ -16,7 +16,6 @@
 
 (defn get-systems
   [params]
-  (let [[limit offset sort-field sort-dir] (param/parse-paging-params params system-sort-fields :id)
-        systems (db/fetch-systems limit offset sort-field sort-dir)]
+  (let [systems (listings/get-listing :systems params system-sort-fields :id)]
     {:systems (map format-system systems)}))
 

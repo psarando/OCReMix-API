@@ -20,58 +20,9 @@
   (defonce ocr (db/create-db (create-db-spec)))
   (db/default-connection ocr))
 
-(defn fetch-remixes
-  [result-limit start sort-field sort-dir]
-  (select :remixes
-          (order sort-field sort-dir)
-          (limit result-limit)
-          (offset start)))
-
-(defn fetch-songs
-  [result-limit start sort-field sort-dir]
-  (select :songs
-          (order sort-field sort-dir)
-          (limit result-limit)
-          (offset start)))
-
-(defn fetch-games
-  [result-limit start sort-field sort-dir]
-  (select :games
-          (order sort-field sort-dir)
-          (limit result-limit)
-          (offset start)))
-
-(defn fetch-albums
-  [result-limit start sort-field sort-dir]
-  (select :albums
-          (order sort-field sort-dir)
-          (limit result-limit)
-          (offset start)))
-
-(defn fetch-artists
-  [result-limit start sort-field sort-dir]
-  (select :artists
-          (order sort-field sort-dir)
-          (limit result-limit)
-          (offset start)))
-
-(defn fetch-chiptunes
-  [result-limit start sort-field sort-dir]
-  (select :chiptunes
-          (order sort-field sort-dir)
-          (limit result-limit)
-          (offset start)))
-
-(defn fetch-systems
-  [result-limit start sort-field sort-dir]
-  (select :systems
-          (order sort-field sort-dir)
-          (limit result-limit)
-          (offset start)))
-
-(defn fetch-organizations
-  [result-limit start sort-field sort-dir]
-  (select :organizations
+(defn fetch-listing
+  [table result-limit start sort-field sort-dir]
+  (select table
           (order sort-field sort-dir)
           (limit result-limit)
           (offset start)))

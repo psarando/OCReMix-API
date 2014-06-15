@@ -1,7 +1,7 @@
 (ns org.ocremix.api.listings.games
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.date :as date]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.listings :as listings]
+            [org.ocremix.api.util.date :as date]))
 
 (def ^:private game-sort-fields #{:id :name :name_short :name_jp :year :system})
 
@@ -19,7 +19,6 @@
 
 (defn get-games
   [params]
-  (let [[limit offset sort-field sort-dir] (param/parse-paging-params params game-sort-fields :id)
-        games (db/fetch-games limit offset sort-field sort-dir)]
+  (let [games (listings/get-listing :games params game-sort-fields :id)]
     {:games (map format-game games)}))
 

@@ -1,7 +1,6 @@
 (ns org.ocremix.api.listings.artists
-  (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.date :as date]
-            [org.ocremix.api.util.param :as param]))
+  (:require [org.ocremix.api.listings :as listings]
+            [org.ocremix.api.util.date :as date]))
 
 (def ^:private artist-sort-fields #{:id :name :real_name :gender :birthdate :birthplace})
 
@@ -14,7 +13,6 @@
 
 (defn get-artists
   [params]
-  (let [[limit offset sort-field sort-dir] (param/parse-paging-params params artist-sort-fields :id)
-        artists (db/fetch-artists limit offset sort-field sort-dir)]
+  (let [artists (listings/get-listing :artists params artist-sort-fields :id)]
     {:artists (map format-artist artists)}))
 

@@ -1,6 +1,6 @@
 (ns org.ocremix.api.listings.albums
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.listings :as listings]))
 
 (def ^:private album-sort-fields #{:id :name :catalog :release_date :media :vgmdb_id})
 
@@ -12,7 +12,6 @@
 
 (defn get-albums
   [params]
-  (let [[limit offset sort-field sort-dir] (param/parse-paging-params params album-sort-fields :id)
-        albums (db/fetch-albums limit offset sort-field sort-dir)]
+  (let [albums (listings/get-listing :albums params album-sort-fields :id)]
     {:albums (map format-album albums)}))
 

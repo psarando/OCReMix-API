@@ -1,6 +1,6 @@
 (ns org.ocremix.api.listings.chiptunes
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.listings :as listings]))
 
 (def ^:private chiptune-sort-fields #{:id :name :size :file :format :songs})
 
@@ -12,7 +12,6 @@
 
 (defn get-chiptunes
   [params]
-  (let [[limit offset sort-field sort-dir] (param/parse-paging-params params chiptune-sort-fields :id)
-        chiptunes (db/fetch-chiptunes limit offset sort-field sort-dir)]
+  (let [chiptunes (listings/get-listing :chiptunes params chiptune-sort-fields :id)]
     {:chiptunes (map format-chiptune chiptunes)}))
 

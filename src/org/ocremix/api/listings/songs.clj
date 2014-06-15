@@ -1,6 +1,6 @@
 (ns org.ocremix.api.listings.songs
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.listings :as listings]))
 
 (def ^:private song-sort-fields #{:id :name})
 
@@ -11,7 +11,6 @@
 
 (defn get-songs
   [params]
-  (let [[limit offset sort-field sort-dir] (param/parse-paging-params params song-sort-fields :id)
-        songs (db/fetch-songs limit offset sort-field sort-dir)]
+  (let [songs (listings/get-listing :songs params song-sort-fields :id)]
     {:songs (map format-song songs)}))
 
