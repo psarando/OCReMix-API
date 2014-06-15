@@ -3,9 +3,11 @@
   (:use [compojure.core]
         [ring.middleware params keyword-params])
   (:require [org.ocremix.api.db :as db]
+            [org.ocremix.api.entities.album :as album]
             [org.ocremix.api.entities.game :as game]
             [org.ocremix.api.entities.remix :as remix]
             [org.ocremix.api.entities.song :as song]
+            [org.ocremix.api.listings.albums :as albums]
             [org.ocremix.api.listings.games :as games]
             [org.ocremix.api.listings.remixes :as remixes]
             [org.ocremix.api.listings.songs :as songs]
@@ -49,6 +51,18 @@
 
   (GET "/games/:game-id/remixes" [game-id]
        (service/trap #(game/get-game-remixes game-id)))
+
+  (GET "/albums" [:as {params :params}]
+       (service/trap #(albums/get-albums params)))
+
+  (GET "/albums/:album-id" [album-id]
+       (service/trap #(album/get-album album-id)))
+
+  (GET "/albums/:album-id/composers" [album-id]
+       (service/trap #(album/get-album-composers album-id)))
+
+  (GET "/albums/:album-id/remixes" [album-id]
+       (service/trap #(album/get-album-remixes album-id)))
 
   (route/not-found (service/unrecognized-path-response)))
 
