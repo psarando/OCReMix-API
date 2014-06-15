@@ -7,6 +7,7 @@
             [org.ocremix.api.entities.artist :as artist]
             [org.ocremix.api.entities.chiptune :as chiptune]
             [org.ocremix.api.entities.game :as game]
+            [org.ocremix.api.entities.organization :as organization]
             [org.ocremix.api.entities.remix :as remix]
             [org.ocremix.api.entities.song :as song]
             [org.ocremix.api.entities.system :as system]
@@ -14,6 +15,7 @@
             [org.ocremix.api.listings.artists :as artists]
             [org.ocremix.api.listings.chiptunes :as chiptunes]
             [org.ocremix.api.listings.games :as games]
+            [org.ocremix.api.listings.organizations :as organizations]
             [org.ocremix.api.listings.remixes :as remixes]
             [org.ocremix.api.listings.songs :as songs]
             [org.ocremix.api.listings.systems :as systems]
@@ -108,6 +110,27 @@
 
   (GET "/systems/:system-id/remixes" [system-id]
        (service/trap #(system/get-system-remixes system-id)))
+
+  (GET "/orgs" [:as {params :params}]
+       (service/trap #(organizations/get-organizations params)))
+
+  (GET "/orgs/:organization-id" [organization-id]
+       (service/trap #(organization/get-organization organization-id)))
+
+  (GET "/orgs/:organization-id/systems" [organization-id]
+       (service/trap #(organization/get-organization-systems organization-id)))
+
+  (GET "/orgs/:organization-id/games" [organization-id]
+       (service/trap #(organization/get-organization-games organization-id)))
+
+  (GET "/orgs/:organization-id/artists" [organization-id]
+       (service/trap #(organization/get-organization-artists organization-id)))
+
+  (GET "/orgs/:organization-id/albums" [organization-id]
+       (service/trap #(organization/get-organization-albums organization-id)))
+
+  (GET "/orgs/:organization-id/remixes" [organization-id]
+       (service/trap #(organization/get-organization-remixes organization-id)))
 
   (route/not-found (service/unrecognized-path-response)))
 
