@@ -4,10 +4,12 @@
         [ring.middleware params keyword-params])
   (:require [org.ocremix.api.db :as db]
             [org.ocremix.api.entities.album :as album]
+            [org.ocremix.api.entities.artist :as artist]
             [org.ocremix.api.entities.game :as game]
             [org.ocremix.api.entities.remix :as remix]
             [org.ocremix.api.entities.song :as song]
             [org.ocremix.api.listings.albums :as albums]
+            [org.ocremix.api.listings.artists :as artists]
             [org.ocremix.api.listings.games :as games]
             [org.ocremix.api.listings.remixes :as remixes]
             [org.ocremix.api.listings.songs :as songs]
@@ -63,6 +65,21 @@
 
   (GET "/albums/:album-id/remixes" [album-id]
        (service/trap #(album/get-album-remixes album-id)))
+
+  (GET "/artists" [:as {params :params}]
+       (service/trap #(artists/get-artists params)))
+
+  (GET "/artists/:artist-id" [artist-id]
+       (service/trap #(artist/get-artist artist-id)))
+
+  (GET "/artists/:artist-id/games" [artist-id]
+       (service/trap #(artist/get-artist-games artist-id)))
+
+  (GET "/artists/:artist-id/albums" [artist-id]
+       (service/trap #(artist/get-artist-albums artist-id)))
+
+  (GET "/artists/:artist-id/remixes" [artist-id]
+       (service/trap #(artist/get-artist-remixes artist-id)))
 
   (route/not-found (service/unrecognized-path-response)))
 
