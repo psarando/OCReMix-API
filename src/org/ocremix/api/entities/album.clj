@@ -1,16 +1,12 @@
 (ns org.ocremix.api.entities.album
   (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.entities :as entities]))
 
 (defn- get-album-info
   [id fetch-info-fn format-fn]
-  (let [album-id (param/string-to-int id nil)
-        album (when album-id (fetch-info-fn album-id))]
-    (if album
-        (format-fn album)
-        (throw+ {:status 404
-                 :body (str "Album ID not found: " id)}))))
+  (let [album (entities/get-entity-info id fetch-info-fn (str "Album ID not found: " id))]
+    (format-fn album)))
 
 (defn- format-album
   [album]
@@ -47,5 +43,5 @@
 
 (defn get-album
   [id]
-  (get-album-info id db/fetch-album format-album))
+  (get-album-info id (partial db/fetch-entity :albums) format-album))
 

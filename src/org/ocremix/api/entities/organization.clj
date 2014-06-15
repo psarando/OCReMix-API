@@ -1,16 +1,12 @@
 (ns org.ocremix.api.entities.organization
   (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.entities :as entities]))
 
 (defn- get-organization-info
   [id fetch-info-fn format-fn]
-  (let [org-id (param/string-to-int id nil)
-        org (when org-id (fetch-info-fn org-id))]
-    (if org
-        (format-fn org)
-        (throw+ {:status 404
-                 :body (str "Organization ID not found: " id)}))))
+  (let [org (entities/get-entity-info id fetch-info-fn (str "Organization ID not found: " id))]
+    (format-fn org)))
 
 (defn- format-organization
   [org]
@@ -64,5 +60,5 @@
 
 (defn get-organization
   [id]
-  (get-organization-info id db/fetch-org format-organization))
+  (get-organization-info id (partial db/fetch-entity :organizations) format-organization))
 

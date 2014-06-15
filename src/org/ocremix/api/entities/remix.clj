@@ -40,7 +40,7 @@
         songs (db/fetch-remix-songs remix-id)
         composers (when (seq songs)
                     (mapcat db/fetch-song-composers (map :id songs)))
-        game (db/fetch-game (:game remix))
+        game (db/fetch-entity :games (:game remix))
         publisher (db/fetch-id-name :organizations (:publisher game))
         system (db/fetch-id-name :systems (:system game))]
     (-> remix
@@ -58,7 +58,7 @@
 
 (defn get-remix
   [remix-id]
-  (let [remix (db/fetch-remix remix-id)]
+  (let [remix (db/fetch-entity :remixes remix-id)]
     (if remix
         (format-remix remix)
         (throw+ {:status 404

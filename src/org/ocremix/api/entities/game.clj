@@ -2,16 +2,12 @@
   (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.db :as db]
             [org.ocremix.api.util.date :as date]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.entities :as entities]))
 
 (defn- get-game-info
   [id fetch-info-fn format-fn]
-  (let [game-id (param/string-to-int id nil)
-        game (when game-id (fetch-info-fn game-id))]
-    (if game
-        (format-fn game)
-        (throw+ {:status 404
-                 :body (str "Game ID not found: " id)}))))
+  (let [game (entities/get-entity-info id fetch-info-fn (str "Game ID not found: " id))]
+    (format-fn game)))
 
 (defn- format-game
   [game]
@@ -62,5 +58,5 @@
 
 (defn get-game
   [id]
-  (get-game-info id db/fetch-game format-game))
+  (get-game-info id (partial db/fetch-entity :games) format-game))
 

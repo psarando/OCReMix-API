@@ -26,7 +26,7 @@
         songs (db/fetch-remix-songs remix-id)
         composers (when (seq songs)
                     (mapcat db/fetch-song-composers (map :id songs)))
-        game (db/fetch-game (:game remix))
+        game (db/fetch-entity :games (:game remix))
         publisher (db/fetch-id-name :organizations (:publisher game))
         system (db/fetch-id-name :systems (:system game))]
     (-> remix

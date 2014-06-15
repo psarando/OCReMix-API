@@ -1,7 +1,7 @@
 (ns org.ocremix.api.entities.chiptune
   (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.entities :as entities]))
 
 (defn- format-chiptune
   [chiptune]
@@ -14,10 +14,8 @@
 
 (defn get-chiptune
   [id]
-  (let [chiptune-id (param/string-to-int id nil)
-        chiptune (when chiptune-id (db/fetch-chiptune chiptune-id))]
-    (if chiptune
-        (format-chiptune chiptune)
-        (throw+ {:status 404
-                 :body (str "Chiptune ID not found: " id)}))))
+  (let [chiptune (entities/get-entity-info id
+                                           (partial db/fetch-entity :chiptunes)
+                                           (str "Chiptune ID not found: " id))]
+    (format-chiptune chiptune)))
 

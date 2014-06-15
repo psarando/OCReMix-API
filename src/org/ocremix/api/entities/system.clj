@@ -1,8 +1,7 @@
 (ns org.ocremix.api.entities.system
   (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.date :as date]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.util.date :as date]))
 
 (defn- get-system-info
   [system-id fetch-info-fn format-fn]
@@ -61,5 +60,5 @@
 
 (defn get-system
   [id]
-  (get-system-info id db/fetch-system format-system))
+  (get-system-info id (partial db/fetch-entity :systems) format-system))
 

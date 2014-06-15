@@ -2,16 +2,12 @@
   (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.db :as db]
             [org.ocremix.api.util.date :as date]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.entities :as entities]))
 
 (defn- get-artist-info
   [id fetch-info-fn format-fn]
-  (let [artist-id (param/string-to-int id nil)
-        artist (when artist-id (fetch-info-fn artist-id))]
-    (if artist
-        (format-fn artist)
-        (throw+ {:status 404
-                 :body (str "Artist ID not found: " id)}))))
+  (let [artist (entities/get-entity-info id fetch-info-fn (str "Artist ID not found: " id))]
+    (format-fn artist)))
 
 (defn- format-artist
   [artist]
@@ -61,5 +57,5 @@
 
 (defn get-artist
   [id]
-  (get-artist-info id db/fetch-artist format-artist))
+  (get-artist-info id (partial db/fetch-entity :artists) format-artist))
 

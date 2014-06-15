@@ -27,58 +27,10 @@
           (limit result-limit)
           (offset start)))
 
-(defn fetch-remix
-  [id]
+(defn fetch-entity
+  [table id]
   (first
-   (select :remixes
-           (where {:id id}))))
-
-(defn fetch-mixpost
-  [id]
-  (first
-   (select :mixposts
-           (where {:remix_id id}))))
-
-(defn fetch-song
-  [id]
-  (first
-   (select :songs
-           (where {:id id}))))
-
-(defn fetch-chiptune
-  [id]
-  (first
-   (select :chiptunes
-           (where {:id id}))))
-
-(defn fetch-album
-  [id]
-  (first
-   (select :albums
-           (where {:id id}))))
-
-(defn fetch-artist
-  [id]
-  (first
-   (select :artists
-           (where {:id id}))))
-
-(defn fetch-game
-  [id]
-  (first
-   (select :games
-           (where {:id id}))))
-
-(defn fetch-org
-  [id]
-  (first
-   (select :organizations
-           (where {:id id}))))
-
-(defn fetch-system
-  [id]
-  (first
-   (select :systems
+   (select table
            (where {:id id}))))
 
 (defn fetch-id-name
@@ -87,6 +39,12 @@
    (select table
            (fields :id :name)
            (where {:id id}))))
+
+(defn fetch-mixpost
+  [id]
+  (first
+   (select :mixposts
+           (where {:remix_id id}))))
 
 (defn fetch-remix-artists
   [id]

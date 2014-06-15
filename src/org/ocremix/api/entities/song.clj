@@ -1,7 +1,12 @@
 (ns org.ocremix.api.entities.song
   (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.param :as param]))
+            [org.ocremix.api.entities :as entities]))
+
+(defn- get-song-info
+  [id fetch-info-fn format-fn]
+  (let [song (entities/get-entity-info id fetch-info-fn (str "Song ID not found: " id))]
+    (format-fn song)))
 
 (defn- format-song
   [song]
@@ -25,19 +30,9 @@
 
 (defn get-song-remixes
   [id]
-  (let [song-id (param/string-to-int id nil)
-        song (when song-id (db/fetch-id-name :songs song-id))]
-    (if song
-        (format-song-remixes song)
-        (throw+ {:status 404
-                 :body (str "Song ID not found: " id)}))))
+  (get-song-info id (partial db/fetch-id-name :songs) format-song-remixes))
 
 (defn get-song
   [id]
-  (let [song-id (param/string-to-int id nil)
-        song (when song-id (db/fetch-song song-id))]
-    (if song
-        (format-song song)
-        (throw+ {:status 404
-                 :body (str "Song ID not found: " id)}))))
+  (get-song-info id (partial db/fetch-entity :songs) format-song))
 
