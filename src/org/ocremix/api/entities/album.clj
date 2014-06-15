@@ -1,7 +1,8 @@
 (ns org.ocremix.api.entities.album
   (:use [slingshot.slingshot :only [throw+]])
-  (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.entities :as entities]))
+  (:require [org.ocremix.api.entities :as entities]
+            [org.ocremix.api.persistence :as db]
+            [org.ocremix.api.persistence.albums :as db-albums]))
 
 (defn- get-album-info
   [id fetch-info-fn format-fn]
@@ -11,11 +12,11 @@
 (defn- format-album
   [album]
   (let [album-id (:id album)
-        games (db/fetch-album-games album-id)
+        games (db-albums/fetch-album-games album-id)
         publisher (db/fetch-id-name :organizations (:publisher album))
-        artists (db/fetch-album-artists album-id)
-        artwork (map :url (db/fetch-album-art album-id))
-        references (map :url (db/fetch-album-references album-id))]
+        artists (db-albums/fetch-album-artists album-id)
+        artwork (map :url (db-albums/fetch-album-art album-id))
+        references (map :url (db-albums/fetch-album-references album-id))]
     (-> album
         (assoc :games games)
         (assoc :publisher publisher)
@@ -25,12 +26,12 @@
 
 (defn- format-album-composers
   [album]
-  (let [composers (db/fetch-album-composers (:id album))]
+  (let [composers (db-albums/fetch-album-composers (:id album))]
     (assoc album :composers composers)))
 
 (defn- format-album-remixes
   [album]
-  (let [remixes (db/fetch-album-remixes (:id album))]
+  (let [remixes (db-albums/fetch-album-remixes (:id album))]
     (assoc album :remixes remixes)))
 
 (defn get-album-remixes

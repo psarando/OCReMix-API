@@ -1,7 +1,8 @@
 (ns org.ocremix.api.entities.organization
   (:use [slingshot.slingshot :only [throw+]])
-  (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.entities :as entities]))
+  (:require [org.ocremix.api.entities :as entities]
+            [org.ocremix.api.persistence :as db]
+            [org.ocremix.api.persistence.organizations :as db-organizations]))
 
 (defn- get-organization-info
   [id fetch-info-fn format-fn]
@@ -10,32 +11,32 @@
 
 (defn- format-organization
   [org]
-  (let [references (db/fetch-org-references (:id org))]
+  (let [references (db-organizations/fetch-org-references (:id org))]
     (assoc org :references references)))
 
 (defn- format-organization-systems
   [org]
-  (let [systems (db/fetch-org-systems (:id org))]
+  (let [systems (db-organizations/fetch-org-systems (:id org))]
     (assoc org :systems systems)))
 
 (defn- format-organization-games
   [org]
-  (let [games (db/fetch-org-games (:id org))]
+  (let [games (db-organizations/fetch-org-games (:id org))]
     (assoc org :games games)))
 
 (defn- format-organization-artists
   [org]
-  (let [composers (db/fetch-org-composers (:id org))]
+  (let [composers (db-organizations/fetch-org-composers (:id org))]
     (assoc org :composers composers)))
 
 (defn- format-organization-albums
   [org]
-  (let [albums (db/fetch-org-albums (:id org))]
+  (let [albums (db-organizations/fetch-org-albums (:id org))]
     (assoc org :albums albums)))
 
 (defn- format-organization-remixes
   [org]
-  (let [remixes (db/fetch-org-remixes (:id org))]
+  (let [remixes (db-organizations/fetch-org-remixes (:id org))]
     (assoc org :remixes remixes)))
 
 (defn get-organization-remixes

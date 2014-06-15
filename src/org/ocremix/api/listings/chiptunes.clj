@@ -1,6 +1,6 @@
 (ns org.ocremix.api.listings.chiptunes
-  (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.listings :as listings]))
+  (:require [org.ocremix.api.listings :as listings]
+            [org.ocremix.api.persistence :as db]))
 
 (def ^:private chiptune-sort-fields #{:id :name :size :file :format :songs})
 

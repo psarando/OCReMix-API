@@ -1,8 +1,9 @@
 (ns org.ocremix.api.entities.game
   (:use [slingshot.slingshot :only [throw+]])
-  (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.util.date :as date]
-            [org.ocremix.api.entities :as entities]))
+  (:require [org.ocremix.api.entities :as entities]
+            [org.ocremix.api.persistence :as db]
+            [org.ocremix.api.persistence.games :as db-games]
+            [org.ocremix.api.util.date :as date]))
 
 (defn- get-game-info
   [id fetch-info-fn format-fn]
@@ -16,10 +17,10 @@
         year (when year (date/date-to-year year))
         publisher (db/fetch-id-name :organizations (:publisher game))
         system (db/fetch-id-name :systems (:system game))
-        composers (db/fetch-game-composers game-id)
-        artwork (map :url (db/fetch-game-art game-id))
-        references (map :url (db/fetch-game-references game-id))
-        chiptunes (db/fetch-game-chiptunes game-id)]
+        composers (db-games/fetch-game-composers game-id)
+        artwork (map :url (db-games/fetch-game-art game-id))
+        references (map :url (db-games/fetch-game-references game-id))
+        chiptunes (db-games/fetch-game-chiptunes game-id)]
     (-> game
         (assoc :year year)
         (assoc :publisher publisher)
@@ -31,17 +32,17 @@
 
 (defn- format-game-songs
   [game]
-  (let [songs (db/fetch-game-songs (:id game))]
+  (let [songs (db-games/fetch-game-songs (:id game))]
     (assoc game :songs songs)))
 
 (defn- format-game-albums
   [game]
-  (let [albums (db/fetch-game-albums (:id game))]
+  (let [albums (db-games/fetch-game-albums (:id game))]
     (assoc game :albums albums)))
 
 (defn- format-game-remixes
   [game]
-  (let [remixes (db/fetch-game-remixes (:id game))]
+  (let [remixes (db-games/fetch-game-remixes (:id game))]
     (assoc game :remixes remixes)))
 
 (defn get-game-remixes

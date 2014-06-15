@@ -1,5 +1,5 @@
 (ns org.ocremix.api.listings
-  (:require [org.ocremix.api.db :as db]
+  (:require [org.ocremix.api.persistence :as db]
             [org.ocremix.api.util.param :as param]))
 
 (defn get-listing

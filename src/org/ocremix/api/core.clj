@@ -2,8 +2,7 @@
   (:gen-class)
   (:use [compojure.core]
         [ring.middleware params keyword-params])
-  (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.entities.album :as album]
+  (:require [org.ocremix.api.entities.album :as album]
             [org.ocremix.api.entities.artist :as artist]
             [org.ocremix.api.entities.chiptune :as chiptune]
             [org.ocremix.api.entities.game :as game]
@@ -19,6 +18,7 @@
             [org.ocremix.api.listings.remixes :as remixes]
             [org.ocremix.api.listings.songs :as songs]
             [org.ocremix.api.listings.systems :as systems]
+            [org.ocremix.api.persistence :as db]
             [org.ocremix.api.service :as service]
             [org.ocremix.api.service.handlers :as handlers]
             [org.ocremix.api.util.config :as config]

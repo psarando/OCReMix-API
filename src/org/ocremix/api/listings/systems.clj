@@ -1,6 +1,6 @@
 (ns org.ocremix.api.listings.systems
-  (:require [org.ocremix.api.db :as db]
-            [org.ocremix.api.listings :as listings]
+  (:require [org.ocremix.api.listings :as listings]
+            [org.ocremix.api.persistence :as db]
             [org.ocremix.api.util.date :as date]))
 
 (def ^:private system-sort-fields #{:id :name :name_jp :year :release_date})
