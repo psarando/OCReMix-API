@@ -12,6 +12,6 @@
 
 (defn get-chiptunes
   [params]
-  (let [chiptunes (listings/get-listing :chiptunes params chiptune-sort-fields :id)]
+  (let [chiptunes (listings/get-listing :chiptunes params chiptune-sort-fields :name)]
     {:chiptunes (map format-chiptune chiptunes)}))
 

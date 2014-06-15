@@ -12,6 +12,6 @@
 
 (defn get-albums
   [params]
-  (let [albums (listings/get-listing :albums params album-sort-fields :id)]
+  (let [albums (listings/get-listing :albums params album-sort-fields :release_date)]
     {:albums (map format-album albums)}))
 

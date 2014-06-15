@@ -13,6 +13,6 @@
 
 (defn get-artists
   [params]
-  (let [artists (listings/get-listing :artists params artist-sort-fields :id)]
+  (let [artists (listings/get-listing :artists params artist-sort-fields :name)]
     {:artists (map format-artist artists)}))
 

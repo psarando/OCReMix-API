@@ -19,6 +19,6 @@
 
 (defn get-games
   [params]
-  (let [games (listings/get-listing :games params game-sort-fields :id)]
+  (let [games (listings/get-listing :games params game-sort-fields :name)]
     {:games (map format-game games)}))
 

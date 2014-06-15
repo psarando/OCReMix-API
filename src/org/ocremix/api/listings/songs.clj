@@ -11,6 +11,6 @@
 
 (defn get-songs
   [params]
-  (let [songs (listings/get-listing :songs params song-sort-fields :id)]
+  (let [songs (listings/get-listing :songs params song-sort-fields :name)]
     {:songs (map format-song songs)}))
 

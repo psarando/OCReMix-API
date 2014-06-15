@@ -5,6 +5,6 @@
 
 (defn get-organizations
   [params]
-  (let [organizations (listings/get-listing :organizations params organization-sort-fields :id)]
+  (let [organizations (listings/get-listing :organizations params organization-sort-fields :name)]
     {:organizations organizations}))
 

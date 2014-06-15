@@ -16,6 +16,6 @@
 
 (defn get-systems
   [params]
-  (let [systems (listings/get-listing :systems params system-sort-fields :id)]
+  (let [systems (listings/get-listing :systems params system-sort-fields :name)]
     {:systems (map format-system systems)}))
 
