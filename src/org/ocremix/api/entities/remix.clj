@@ -5,8 +5,7 @@
 
 (defn- date-to-year
   [m]
-  (when (and m (:year m))
-    (assoc m :year (date/date-to-year (:year m)))))
+  (assoc m :year (when (:year m) (date/date-to-year (:year m)))))
 
 (defn- format-game-info
   [game]
