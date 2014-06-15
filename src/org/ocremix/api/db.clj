@@ -283,6 +283,7 @@
                 {:cs.song_id :s.id})
           (join [:album_game :ag]
                 {:ag.game_id :s.game})
+          (group :a.id :a.name)
           (where {:ag.album_id album-id})))
 
 (defn fetch-album-remixes
