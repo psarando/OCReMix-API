@@ -638,10 +638,12 @@ Optional keys for this endpoint:
     "name": "album name",
     "torrent": "http://bt.ocremix.org/torrents/...torrent",
     "catalog": "XXXX-0000",
-    "game": {
-        "id": 0000,
-        "name": "Video Game"
-    },
+    "games": [
+        {
+            "id": 0000,
+            "name": "Video Game"
+        }
+    ],
     "publisher": {
         "id": 000,
         "name": "..."
@@ -681,10 +683,12 @@ Optional keys for this endpoint:
     "name": "Final Fantasy VI: Balance and Ruin",
     "torrent": "http://bt.ocremix.org/torrents/Final_Fantasy_VI_-_Balance_and_Ruin.torrent",
     "catalog": "OCRA-0040",
-    "game": {
-        "id": 6,
-        "name": "Final Fantasy VI"
-    },
+    "games": [
+        {
+            "id": 6,
+            "name": "Final Fantasy VI"
+        }
+    ],
     "publisher": {
         "id": 130,
         "name": "OverClocked ReMix"
@@ -816,7 +820,7 @@ Optional keys for this endpoint:
 {
     "id": 000,
     "name": "Artist Name",
-    "name_jp": "...",
+    "real_name": "...",
     "gender": "M/F",
     "credits": [
         {
@@ -865,7 +869,7 @@ Optional keys for this endpoint:
 {
     "id": 3,
     "name": "Nobuo Uematsu",
-    "name_jp": "植松伸夫",
+    "real_name": "植松伸夫",
     "gender": "M",
     "credits": [
         {
