@@ -2,7 +2,8 @@
 
 namespace OCR\ApiBundle\Controller;
 
-use OCR\ApiBundle\Model\Data;
+use OCR\ApiBundle\Model\Entity\Remix;
+use OCR\ApiBundle\Model\Listing\Remixes;
 
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -16,7 +17,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Rest controller for remixes
  *
- * @todo Use models instead of arrays for endpoint responses.
  * @package OCR\ApiBundle\Controller
  * @author psarando
  */
@@ -66,85 +66,18 @@ class ApiController extends FOSRestController
      */
     public function getRemixesAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        $data = new Data($this->get('database_connection'));
-        $this->data = $data;
-
-        $limit = intval($paramFetcher->get('limit'));
-        $offset = intval($paramFetcher->get('offset'));
-        $sortOrder = strtolower($paramFetcher->get('sort-order'));
-        $sortDir = strtoupper($paramFetcher->get('sort-dir'));
         $validSortFields = array('id', 'title', 'year', 'size');
 
-        if ($limit < 1) {
-            $limit = 50;
-        }
-        if ($offset < 0) {
-            $offset = 0;
-        }
-        if (!in_array($sortOrder, $validSortFields)) {
-            $sortOrder = "id";
-        }
-        if ($sortDir != "ASC") {
-            $sortDir = "DESC";
-        }
+        $remixes = new Remixes($this->get('database_connection'));
 
-        $remixes = $data->getRemixes($limit, $offset, $sortOrder, $sortDir);
-        $remixes = array_map(array($this, 'formatRemixListing'), $remixes);
-
-        return array(
-            'remixes' => $remixes,
-            'limit' => $limit,
-            'offset' => $offset,
-        );
-    }
-
-    private function formatRemixListing($remix)
-    {
-        $remix = array_intersect_key(
-            $remix,
-            array_flip(array(
-                "id",
-                "title",
-                "game",
-                "album",
-            ))
-        );
-
-        $game = $this->data->getGameInfo($remix["game"]);
-        $remix["game"] = array_intersect_key(
-            $game,
-            array_flip(array(
-                "id",
-                "name",
-                "year",
-                "album",
-            ))
-        );
-        $remix["game"]["year"] = $this->dateToYear($remix["game"]["year"]);
-        $remix["system"] = $this->data->getSystemInfo($game["system"]);
-
-        if (!empty($remix["album"])) {
-            $remix["album"] = $this->data->getAlbumInfo($remix["album"]);
-        }
-
-        $remix["artists"] = $this->data->getRemixArtists($remix["id"]);
-
-        $songs = $this->data->getRemixSongs($remix["id"]);
-        $remix["songs"] = $songs;
-        $song_ids = array_map(function($song) { return $song['id']; }, $songs);
-        $remix["composers"] = $this->data->getSongComposers($song_ids);
-
-        $mixpost = $this->data->getMixPost($remix["id"]);
-        $remix["date"] = $mixpost["posted"];
-
-        return $remix;
+        return $remixes->getRemixes($paramFetcher, $validSortFields, "id");
     }
 
     /**
      * Get a single remix.
      *
      * @ApiDoc(
-     *   output = "OCR\ApiBundle\Model\Remix",
+     *   output = "OCR\ApiBundle\Model\Entity\Remix",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the remix is not found"
@@ -160,75 +93,13 @@ class ApiController extends FOSRestController
      */
     public function getRemixAction(Request $request, $id)
     {
-        $data = new Data($this->get('database_connection'));
-        $remix = $data->getRemix($id);
+        $remix = new Remix($this->get('database_connection'));
+
+        $remix = $remix->getRemix($id);
         if (empty($remix)) {
             throw $this->createNotFoundException("Remix does not exist with ID " . $id);
         }
 
-        $remix["year"] = $this->dateToYear($remix["year"]);
-
-        $game = $data->getGameInfo($remix["game"]);
-        $remix["game"] = array_intersect_key(
-            $game,
-            array_flip(array(
-                "id",
-                "name",
-                "name_short",
-                "year",
-                "album",
-            ))
-        );
-        $remix["game"]["year"] = $this->dateToYear($game["year"]);
-        $remix["publisher"] = $data->getOrgInfo($game["publisher"]);
-        $remix["system"] = $data->getSystemInfo($game["system"]);
-
-        if (!empty($remix["album"])) {
-            $remix["album"] = $data->getAlbumInfo($remix["album"]);
-        }
-
-        $remix["artists"] = $data->getRemixArtists($remix["id"]);
-
-        $songs = $data->getRemixSongs($remix["id"]);
-        $remix["songs"] = $songs;
-        $song_ids = array_map(function($song) { return $song['id']; }, $songs);
-        $remix["composers"] = $data->getSongComposers($song_ids);
-
-        $remix["download"] = $this->formatDownloadInfo(
-            $remix,
-            $data->getDownloadUrls($remix["id"])
-        );
-        unset($remix["size"]);
-        unset($remix["md5"]);
-        unset($remix["torrent"]);
-
-        $mixpost = $data->getMixPost($remix["id"]);
-        $mixpost["evaluators"] = $data->getMixPostEvaluators($remix["id"]);
-        $remix["mixpost"] = $mixpost;
-
         return $remix;
-    }
-
-    private function dateToYear($dateStr)
-    {
-        return (new \DateTime($dateStr))->format("Y");
-    }
-
-    public function formatDownloadInfo($remix, $download_urls)
-    {
-        $download = array_intersect_key(
-            $remix,
-            array_flip(array(
-                "size",
-                "md5",
-                "torrent",
-            ))
-        );
-        $download["links"] = array_map(
-            function($download) { return $download['url']; },
-            $download_urls
-        );
-
-        return $download;
     }
 }
