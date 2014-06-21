@@ -7,6 +7,6 @@ CREATE TABLE chiptunes (
   md5 char(32),
   format text,
   songs int,
-  game_id bigint
+  game bigint
 );
 

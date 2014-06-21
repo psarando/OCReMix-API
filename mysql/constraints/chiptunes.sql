@@ -1,5 +1,5 @@
 ALTER TABLE chiptunes
-    ADD CONSTRAINT chiptunes_game_id_fkey
-    FOREIGN KEY (game_id)
+    ADD CONSTRAINT chiptunes_game_fkey
+    FOREIGN KEY (game)
     REFERENCES games(id);
 
