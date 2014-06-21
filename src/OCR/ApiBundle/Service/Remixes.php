@@ -19,7 +19,7 @@ use OCR\ApiBundle\Service;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 
 /**
- * Model for listing Remixes.
+ * Service for listing Remixes and Remix details.
  *
  * @package OCR\ApiBundle\Service
  * @author psarando
