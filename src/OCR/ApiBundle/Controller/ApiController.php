@@ -2,7 +2,6 @@
 
 namespace OCR\ApiBundle\Controller;
 
-use OCR\ApiBundle\Model\Remix;
 use OCR\ApiBundle\Service\Remixes;
 
 use FOS\RestBundle\Controller\Annotations;
@@ -78,7 +77,7 @@ class ApiController extends FOSRestController
      * Get a single remix.
      *
      * @ApiDoc(
-     *   output = "OCR\ApiBundle\Model\Entity\Remix",
+     *   output = "OCR\ApiBundle\Model\Remix",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the remix is not found"
