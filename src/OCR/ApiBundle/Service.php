@@ -1,20 +1,26 @@
 <?php
 
-namespace OCR\ApiBundle\Model;
+namespace OCR\ApiBundle;
 
-use OCR\ApiBundle\Model\Entity;
-use OCR\ApiBundle\Model\Listing\SortInfo;
+use OCR\ApiBundle\Model\SortInfo;
 
 use FOS\RestBundle\Request\ParamFetcherInterface;
 
 /**
- * Model for listing endpoints.
+ * Base Service for endpoints.
  *
- * @package OCR\ApiBundle\Model
+ * @package OCR\ApiBundle
  * @author psarando
  */
-abstract class Listing extends Entity
+abstract class Service
 {
+    protected $db;
+
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
+
     protected function parseParams(ParamFetcherInterface $paramFetcher, array $validSortFields, $defaultSort)
     {
         $limit = intval($paramFetcher->get('limit'));

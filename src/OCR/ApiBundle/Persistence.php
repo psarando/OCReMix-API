@@ -2,7 +2,7 @@
 
 namespace OCR\ApiBundle;
 
-use OCR\ApiBundle\Model\Listing\SortInfo;
+use OCR\ApiBundle\Model\SortInfo;
 
 /**
  * Data fetcher for Model classes.

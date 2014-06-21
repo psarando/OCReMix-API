@@ -2,8 +2,8 @@
 
 namespace OCR\ApiBundle\Controller;
 
-use OCR\ApiBundle\Model\Entity\Remix;
-use OCR\ApiBundle\Model\Listing\Remixes;
+use OCR\ApiBundle\Model\Remix;
+use OCR\ApiBundle\Service\Remixes;
 
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -28,6 +28,7 @@ class ApiController extends FOSRestController
      * List all remixes.
      *
      * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\RemixCollection",
      *   resource = true,
      *   statusCodes = {
      *     200 = "Returned when successful"
@@ -93,9 +94,9 @@ class ApiController extends FOSRestController
      */
     public function getRemixAction(Request $request, $id)
     {
-        $remix = new Remix($this->get('database_connection'));
+        $remixes = new Remixes($this->get('database_connection'));
 
-        $remix = $remix->getRemix($id);
+        $remix = $remixes->getRemix($id);
         if (empty($remix)) {
             throw $this->createNotFoundException("Remix does not exist with ID " . $id);
         }

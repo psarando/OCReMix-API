@@ -3,18 +3,27 @@
 namespace OCR\ApiBundle\Model;
 
 /**
- * Model for entity endpoints.
+ * Base Entity Model.
  *
  * @package OCR\ApiBundle\Model
  * @author psarando
  */
 abstract class Entity
 {
-    protected $db;
+    /**
+     * @var int|string
+     */
+    public $id;
 
-    public function __construct($db)
+    /**
+     * @var string
+     */
+    public $name;
+
+    public function __construct(array $info)
     {
-        $this->db = $db;
+        $this->id = intval($info['id']);
+        $this->name = $info['name'];
     }
 
     protected function dateToYear($dateStr)

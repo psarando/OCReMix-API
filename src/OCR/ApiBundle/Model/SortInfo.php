@@ -1,11 +1,11 @@
 <?php
 
-namespace OCR\ApiBundle\Model\Listing;
+namespace OCR\ApiBundle\Model;
 
 /**
  * Model containing sorting parameters for listing endpoints.
  *
- * @package OCR\ApiBundle\Model\Listing
+ * @package OCR\ApiBundle\Model
  * @author psarando
  */
 class SortInfo
