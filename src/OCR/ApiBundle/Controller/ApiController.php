@@ -2,6 +2,7 @@
 
 namespace OCR\ApiBundle\Controller;
 
+use OCR\ApiBundle\Service\Games;
 use OCR\ApiBundle\Service\Remixes;
 use OCR\ApiBundle\Service\Songs;
 
@@ -211,5 +212,174 @@ class ApiController extends FOSRestController
         }
 
         return $song;
+    }
+
+    /**
+     * List all games.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
+     *
+     * @Annotations\QueryParam(
+     *      name="limit",
+     *      requirements="\d+",
+     *      default="50",
+     *      description="How many games to return."
+     * )
+     * @Annotations\QueryParam(
+     *      name="offset",
+     *      requirements="\d+",
+     *      default="0",
+     *      description="Offset from which to start listing games."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-order",
+     *      requirements="id|name|name_short|name_jp|year|system",
+     *      default="name",
+     *      description="The field by which to sort games."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-dir",
+     *      requirements="ASC|DESC",
+     *      default="DESC",
+     *      description="The direction in which to sort games."
+     *  )
+     *
+     * @param Request               $request      the request object
+     * @param ParamFetcherInterface $paramFetcher param fetcher service
+     *
+     * @return array
+     */
+    public function getGamesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
+        $validSortFields = array('id', 'name', 'name_short', 'name_jp', 'year', 'system');
+
+        $games = new Games($this->get('database_connection'));
+
+        return $games->getGames($paramFetcher, $validSortFields, 'name');
+    }
+
+    /**
+     * Get a single game.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Game",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the game is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param int     $id      the game id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when game does not exist
+     */
+    public function getGameAction(Request $request, $id)
+    {
+        $games = new Games($this->get('database_connection'));
+
+        $game = $games->getGame($id);
+        if (empty($game)) {
+            throw $this->createNotFoundException("Game does not exist with ID " . $id);
+        }
+
+        return $game;
+    }
+
+    /**
+     * Get songs for a single game.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Game",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the game is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the game id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when game does not exist
+     */
+    public function getGameSongsAction(Request $request, $id)
+    {
+        $games = new Games($this->get('database_connection'));
+
+        $game = $games->getGameSongs($id);
+        if (empty($game)) {
+            throw $this->createNotFoundException("Game does not exist with ID " . $id);
+        }
+
+        return $game;
+    }
+
+    /**
+     * Get albums for a single game.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Game",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the game is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the game id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when game does not exist
+     */
+    public function getGameAlbumsAction(Request $request, $id)
+    {
+        $games = new Games($this->get('database_connection'));
+
+        $game = $games->getGameAlbums($id);
+        if (empty($game)) {
+            throw $this->createNotFoundException("Game does not exist with ID " . $id);
+        }
+
+        return $game;
+    }
+
+    /**
+     * Get remixes for a single game.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Game",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the game is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the game id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when game does not exist
+     */
+    public function getGameRemixesAction(Request $request, $id)
+    {
+        $games = new Games($this->get('database_connection'));
+
+        $game = $games->getGameRemixes($id);
+        if (empty($game)) {
+            throw $this->createNotFoundException("Game does not exist with ID " . $id);
+        }
+
+        return $game;
     }
 }

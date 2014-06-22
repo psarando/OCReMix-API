@@ -12,4 +12,14 @@ class Song extends Entity
     public $game;
     public $chiptunes;
     public $remixes;
+    public $remixCount;
+
+    public function __construct($info)
+    {
+        parent::__construct($info);
+
+        if (!empty($info['remix_count'])) {
+            $this->remixCount = intval($info['remix_count']);
+        }
+    }
 }
