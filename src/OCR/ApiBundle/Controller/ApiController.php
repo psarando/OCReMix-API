@@ -2,6 +2,7 @@
 
 namespace OCR\ApiBundle\Controller;
 
+use OCR\ApiBundle\Service\Albums;
 use OCR\ApiBundle\Service\Games;
 use OCR\ApiBundle\Service\Remixes;
 use OCR\ApiBundle\Service\Songs;
@@ -381,5 +382,144 @@ class ApiController extends FOSRestController
         }
 
         return $game;
+    }
+
+    /**
+     * List all albums.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
+     *
+     * @Annotations\QueryParam(
+     *      name="limit",
+     *      requirements="\d+",
+     *      default="50",
+     *      description="How many albums to return."
+     * )
+     * @Annotations\QueryParam(
+     *      name="offset",
+     *      requirements="\d+",
+     *      default="0",
+     *      description="Offset from which to start listing albums."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-order",
+     *      requirements="id|name|catalog|release_date|media|vgmdb_id",
+     *      default="name",
+     *      description="The field by which to sort albums."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-dir",
+     *      requirements="ASC|DESC",
+     *      default="DESC",
+     *      description="The direction in which to sort albums."
+     *  )
+     *
+     * @param Request               $request      the request object
+     * @param ParamFetcherInterface $paramFetcher param fetcher service
+     *
+     * @return array
+     */
+    public function getAlbumsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
+        $validSortFields = array('id', 'name', 'catalog', 'release_date', 'media', 'vgmdb_id');
+
+        $albums = new Albums($this->get('database_connection'));
+
+        return $albums->getAlbums($paramFetcher, $validSortFields, 'name');
+    }
+
+    /**
+     * Get a single album.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Album",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the album is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param int     $id      the album id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when album does not exist
+     */
+    public function getAlbumAction(Request $request, $id)
+    {
+        $albums = new Albums($this->get('database_connection'));
+
+        $album = $albums->getAlbum($id);
+        if (empty($album)) {
+            throw $this->createNotFoundException("Album does not exist with ID " . $id);
+        }
+
+        return $album;
+    }
+
+    /**
+     * Get composers for a single album.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Album",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the album is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the album id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when album does not exist
+     */
+    public function getAlbumComposersAction(Request $request, $id)
+    {
+        $albums = new Albums($this->get('database_connection'));
+
+        $album = $albums->getAlbumComposers($id);
+        if (empty($album)) {
+            throw $this->createNotFoundException("Album does not exist with ID " . $id);
+        }
+
+        return $album;
+    }
+
+    /**
+     * Get remixes for a single album.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Album",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the album is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the album id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when album does not exist
+     */
+    public function getAlbumRemixesAction(Request $request, $id)
+    {
+        $albums = new Albums($this->get('database_connection'));
+
+        $album = $albums->getAlbumRemixes($id);
+        if (empty($album)) {
+            throw $this->createNotFoundException("Album does not exist with ID " . $id);
+        }
+
+        return $album;
     }
 }
