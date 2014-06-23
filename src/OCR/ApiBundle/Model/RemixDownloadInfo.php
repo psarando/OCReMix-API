@@ -4,7 +4,7 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
-class RemixDownloadInfo extends Entity
+class RemixDownloadInfo
 {
     public $size;
     public $md5;
