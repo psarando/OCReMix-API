@@ -3,6 +3,7 @@
 namespace OCR\ApiBundle\Controller;
 
 use OCR\ApiBundle\Service\Albums;
+use OCR\ApiBundle\Service\Artists;
 use OCR\ApiBundle\Service\Games;
 use OCR\ApiBundle\Service\Remixes;
 use OCR\ApiBundle\Service\Songs;
@@ -521,5 +522,174 @@ class ApiController extends FOSRestController
         }
 
         return $album;
+    }
+
+    /**
+     * List all artists.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
+     *
+     * @Annotations\QueryParam(
+     *      name="limit",
+     *      requirements="\d+",
+     *      default="50",
+     *      description="How many artists to return."
+     * )
+     * @Annotations\QueryParam(
+     *      name="offset",
+     *      requirements="\d+",
+     *      default="0",
+     *      description="Offset from which to start listing artists."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-order",
+     *      requirements="id|name|real_name|gender|birthdate|birthplace",
+     *      default="name",
+     *      description="The field by which to sort artists."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-dir",
+     *      requirements="ASC|DESC",
+     *      default="DESC",
+     *      description="The direction in which to sort artists."
+     *  )
+     *
+     * @param Request               $request      the request object
+     * @param ParamFetcherInterface $paramFetcher param fetcher service
+     *
+     * @return array
+     */
+    public function getArtistsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
+        $validSortFields = array('id', 'name', 'real_name', 'gender', 'birthdate', 'birthplace');
+
+        $artists = new Artists($this->get('database_connection'));
+
+        return $artists->getArtists($paramFetcher, $validSortFields, 'name');
+    }
+
+    /**
+     * Get a single artist.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Artist",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the artist is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param int     $id      the artist id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when artist does not exist
+     */
+    public function getArtistAction(Request $request, $id)
+    {
+        $artists = new Artists($this->get('database_connection'));
+
+        $artist = $artists->getArtist($id);
+        if (empty($artist)) {
+            throw $this->createNotFoundException("Artist does not exist with ID " . $id);
+        }
+
+        return $artist;
+    }
+
+    /**
+     * Get games for a single artist.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Artist",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the artist is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the artist id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when artist does not exist
+     */
+    public function getArtistGamesAction(Request $request, $id)
+    {
+        $artists = new Artists($this->get('database_connection'));
+
+        $artist = $artists->getArtistGames($id);
+        if (empty($artist)) {
+            throw $this->createNotFoundException("Artist does not exist with ID " . $id);
+        }
+
+        return $artist;
+    }
+
+    /**
+     * Get albums for a single artist.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Artist",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the artist is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the artist id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when artist does not exist
+     */
+    public function getArtistAlbumsAction(Request $request, $id)
+    {
+        $artists = new Artists($this->get('database_connection'));
+
+        $artist = $artists->getArtistAlbums($id);
+        if (empty($artist)) {
+            throw $this->createNotFoundException("Artist does not exist with ID " . $id);
+        }
+
+        return $artist;
+    }
+
+    /**
+     * Get remixes for a single artist.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Artist",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the artist is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the artist id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when artist does not exist
+     */
+    public function getArtistRemixesAction(Request $request, $id)
+    {
+        $artists = new Artists($this->get('database_connection'));
+
+        $artist = $artists->getArtistRemixes($id);
+        if (empty($artist)) {
+            throw $this->createNotFoundException("Artist does not exist with ID " . $id);
+        }
+
+        return $artist;
     }
 }

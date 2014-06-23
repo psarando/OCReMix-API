@@ -17,6 +17,10 @@ class Artist extends Entity
     public $images;
     public $references;
 
+    public $games;
+    public $albums;
+    public $remixes;
+
     public function __construct($info)
     {
         parent::__construct($info);
