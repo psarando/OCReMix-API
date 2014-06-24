@@ -7,6 +7,7 @@ use OCR\ApiBundle\Service\Artists;
 use OCR\ApiBundle\Service\Games;
 use OCR\ApiBundle\Service\Remixes;
 use OCR\ApiBundle\Service\Songs;
+use OCR\ApiBundle\Service\Systems;
 
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -691,5 +692,204 @@ class ApiController extends FOSRestController
         }
 
         return $artist;
+    }
+
+    /**
+     * List all systems.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
+     *
+     * @Annotations\QueryParam(
+     *      name="limit",
+     *      requirements="\d+",
+     *      default="50",
+     *      description="How many systems to return."
+     * )
+     * @Annotations\QueryParam(
+     *      name="offset",
+     *      requirements="\d+",
+     *      default="0",
+     *      description="Offset from which to start listing systems."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-order",
+     *      requirements="id|name|name_jp|year|release_date",
+     *      default="name",
+     *      description="The field by which to sort systems."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-dir",
+     *      requirements="ASC|DESC",
+     *      default="DESC",
+     *      description="The direction in which to sort systems."
+     *  )
+     *
+     * @param Request               $request      the request object
+     * @param ParamFetcherInterface $paramFetcher param fetcher service
+     *
+     * @return array
+     */
+    public function getSystemsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
+        $validSortFields = array('id', 'name', 'name_jp', 'year', 'release_date');
+
+        $systems = new Systems($this->get('database_connection'));
+
+        return $systems->getSystems($paramFetcher, $validSortFields, 'name');
+    }
+
+    /**
+     * Get a single system.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\System",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the system is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param int     $id      the system id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when system does not exist
+     */
+    public function getSystemAction(Request $request, $id)
+    {
+        $systems = new Systems($this->get('database_connection'));
+
+        $system = $systems->getSystem($id);
+        if (empty($system)) {
+            throw $this->createNotFoundException("System does not exist with ID " . $id);
+        }
+
+        return $system;
+    }
+
+    /**
+     * Get composers for a single system.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\System",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the system is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the system id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when system does not exist
+     */
+    public function getSystemComposersAction(Request $request, $id)
+    {
+        $systems = new Systems($this->get('database_connection'));
+
+        $system = $systems->getSystemComposers($id);
+        if (empty($system)) {
+            throw $this->createNotFoundException("System does not exist with ID " . $id);
+        }
+
+        return $system;
+    }
+
+    /**
+     * Get games for a single system.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\System",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the system is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the system id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when system does not exist
+     */
+    public function getSystemGamesAction(Request $request, $id)
+    {
+        $systems = new Systems($this->get('database_connection'));
+
+        $system = $systems->getSystemGames($id);
+        if (empty($system)) {
+            throw $this->createNotFoundException("System does not exist with ID " . $id);
+        }
+
+        return $system;
+    }
+
+    /**
+     * Get albums for a single system.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\System",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the system is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the system id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when system does not exist
+     */
+    public function getSystemAlbumsAction(Request $request, $id)
+    {
+        $systems = new Systems($this->get('database_connection'));
+
+        $system = $systems->getSystemAlbums($id);
+        if (empty($system)) {
+            throw $this->createNotFoundException("System does not exist with ID " . $id);
+        }
+
+        return $system;
+    }
+
+    /**
+     * Get remixes for a single system.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\System",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the system is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param string  $id      the system id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when system does not exist
+     */
+    public function getSystemRemixesAction(Request $request, $id)
+    {
+        $systems = new Systems($this->get('database_connection'));
+
+        $system = $systems->getSystemRemixes($id);
+        if (empty($system)) {
+            throw $this->createNotFoundException("System does not exist with ID " . $id);
+        }
+
+        return $system;
     }
 }
