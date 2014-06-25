@@ -31,19 +31,22 @@ class Remixes extends Service
 
     public function __construct($db)
     {
-        parent::__construct($db);
         $this->data = new RemixData($db);
         $this->songData = new SongData($db);
     }
 
     public function getRemixes(ParamFetcherInterface $paramFetcher, array $validSortFields, $defaultSort)
     {
-        $sortInfo = $this->parseParams($paramFetcher, $validSortFields, $defaultSort);
+        $listing = new RemixCollection($defaultSort);
+        $this->parseParams($paramFetcher, $validSortFields, $listing);
 
-        $remixes = $this->data->getListing('remixes', $sortInfo);
-        $remixes = array_map(array($this, 'formatRemixListing'), $remixes);
+        $listing->total = $this->data->getListingTotal('remixes');
+        $listing->remixes = array_map(
+            array($this, 'formatRemixListing'),
+            $this->data->getListing('remixes', $listing)
+        );
 
-        return new RemixCollection($remixes, $sortInfo);
+        return $listing;
     }
 
     public function getRemix($id)

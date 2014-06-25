@@ -28,18 +28,21 @@ class Games extends Service
 
     public function __construct($db)
     {
-        parent::__construct($db);
         $this->data = new GameData($db);
     }
 
     public function getGames(ParamFetcherInterface $paramFetcher, array $validSortFields, $defaultSort)
     {
-        $sortInfo = $this->parseParams($paramFetcher, $validSortFields, $defaultSort);
+        $listing = new GameCollection($defaultSort);
+        $this->parseParams($paramFetcher, $validSortFields, $listing);
 
-        $games = $this->data->getListing('games', $sortInfo);
-        $games = array_map(array($this, 'formatGameListing'), $games);
+        $listing->total = $this->data->getListingTotal('games');
+        $listing->games = array_map(
+            array($this, 'formatGameListing'),
+            $this->data->getListing('games', $listing)
+        );
 
-        return new GameCollection($games, $sortInfo);
+        return $listing;
     }
 
     public function getGame($id)

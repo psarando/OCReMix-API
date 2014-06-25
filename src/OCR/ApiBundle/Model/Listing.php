@@ -2,10 +2,8 @@
 
 namespace OCR\ApiBundle\Model;
 
-use OCR\ApiBundle\Model\SortInfo;
-
 /**
- * Base Listing Model.
+ * Base Listing Model containing sorting parameters for listing endpoints.
  *
  * @package OCR\ApiBundle\Model
  * @author psarando
@@ -15,7 +13,7 @@ abstract class Listing
     /**
      * @var integer
      */
-    public $offset;
+    public $total;
 
     /**
      * @var integer
@@ -23,13 +21,31 @@ abstract class Listing
     public $limit;
 
     /**
-     * @param SortInfo $sortInfo
+     * @var integer
      */
-    public function __construct(SortInfo $sortInfo = null)
+    public $offset;
+
+    /**
+     * @var string
+     */
+    public $sortOrder;
+
+    /**
+     * @var string
+     */
+    public $sortDir;
+
+    /**
+     * @param string $sortOrder
+     * @param string $sortDir
+     * @param integer $limit
+     * @param integer $offset
+     */
+    public function __construct($sortOrder = null, $sortDir = 'DESC', $limit = 50, $offset = 0)
     {
-        if (!empty($sortInfo)) {
-            $this->offset = $sortInfo->offset;
-            $this->limit = $sortInfo->limit;
-        }
+        $this->sortOrder = $sortOrder;
+        $this->sortDir = $sortDir;
+        $this->limit = $limit;
+        $this->offset = $offset;
     }
 }

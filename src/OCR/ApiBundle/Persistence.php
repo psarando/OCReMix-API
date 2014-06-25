@@ -2,7 +2,7 @@
 
 namespace OCR\ApiBundle;
 
-use OCR\ApiBundle\Model\SortInfo;
+use OCR\ApiBundle\Model\Listing;
 
 /**
  * Data fetcher for Model classes.
@@ -19,7 +19,7 @@ class Persistence
         $this->db = $db;
     }
 
-    public function getListing($table, SortInfo $sortInfo)
+    public function getListing($table, Listing $sortInfo)
     {
         $sortOrder = $sortInfo->sortOrder;
         $sortDir = $sortInfo->sortDir;
@@ -27,6 +27,12 @@ class Persistence
         $offset = $sortInfo->offset;
 
         return $this->db->fetchAll("SELECT * FROM $table ORDER BY $sortOrder $sortDir LIMIT $limit OFFSET $offset");
+    }
+
+    public function getListingTotal($table)
+    {
+        $count =  $this->db->fetchAssoc("SELECT COUNT(*) AS total FROM $table");
+        return intval($count['total']);
     }
 
     public function getEntity($table, $id)

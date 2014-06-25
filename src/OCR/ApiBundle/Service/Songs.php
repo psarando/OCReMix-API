@@ -27,19 +27,22 @@ class Songs extends Service
 
     public function __construct($db)
     {
-        parent::__construct($db);
         $this->data = new SongData($db);
         $this->gameData = new GameData($db);
     }
 
     public function getSongs(ParamFetcherInterface $paramFetcher, array $validSortFields, $defaultSort)
     {
-        $sortInfo = $this->parseParams($paramFetcher, $validSortFields, $defaultSort);
+        $listing = new SongCollection($defaultSort);
+        $this->parseParams($paramFetcher, $validSortFields, $listing);
 
-        $songs = $this->data->getListing('songs', $sortInfo);
-        $songs = array_map(array($this, 'formatSongListing'), $songs);
+        $listing->total = $this->data->getListingTotal('songs');
+        $listing->songs = array_map(
+            array($this, 'formatSongListing'),
+            $this->data->getListing('songs', $listing)
+        );
 
-        return new SongCollection($songs, $sortInfo);
+        return $listing;
     }
 
     public function getSong($id)

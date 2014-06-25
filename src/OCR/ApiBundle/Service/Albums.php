@@ -25,18 +25,21 @@ class Albums extends Service
 
     public function __construct($db)
     {
-        parent::__construct($db);
         $this->data = new AlbumData($db);
     }
 
     public function getAlbums(ParamFetcherInterface $paramFetcher, array $validSortFields, $defaultSort)
     {
-        $sortInfo = $this->parseParams($paramFetcher, $validSortFields, $defaultSort);
+        $listing = new AlbumCollection($defaultSort);
+        $this->parseParams($paramFetcher, $validSortFields, $listing);
 
-        $albums = $this->data->getListing('albums', $sortInfo);
-        $albums = array_map(array($this, 'formatAlbumListing'), $albums);
+        $listing->total = $this->data->getListingTotal('albums');
+        $listing->albums = array_map(
+            array($this, 'formatAlbumListing'),
+            $this->data->getListing('albums', $listing)
+        );
 
-        return new AlbumCollection($albums, $sortInfo);
+        return $listing;
     }
 
     public function getAlbum($id)

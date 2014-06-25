@@ -23,18 +23,21 @@ class Chiptunes extends Service
 
     public function __construct($db)
     {
-        parent::__construct($db);
         $this->data = new GameData($db);
     }
 
     public function getChiptunes(ParamFetcherInterface $paramFetcher, array $validSortFields, $defaultSort)
     {
-        $sortInfo = $this->parseParams($paramFetcher, $validSortFields, $defaultSort);
+        $listing = new ChiptuneCollection($defaultSort);
+        $this->parseParams($paramFetcher, $validSortFields, $listing);
 
-        $chiptunes = $this->data->getListing('chiptunes', $sortInfo);
-        $chiptunes = array_map(array($this, 'formatChiptuneListing'), $chiptunes);
+        $listing->total = $this->data->getListingTotal('chiptunes');
+        $listing->chiptunes = array_map(
+            array($this, 'formatChiptuneListing'),
+            $this->data->getListing('chiptunes', $listing)
+        );
 
-        return new ChiptuneCollection($chiptunes, $sortInfo);
+        return $listing;
     }
 
     public function getChiptune($id)

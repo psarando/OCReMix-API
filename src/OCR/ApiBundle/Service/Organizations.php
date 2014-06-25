@@ -26,18 +26,21 @@ class Organizations extends Service
 
     public function __construct($db)
     {
-        parent::__construct($db);
         $this->data = new OrganizationData($db);
     }
 
     public function getOrganizations(ParamFetcherInterface $paramFetcher, array $validSortFields, $defaultSort)
     {
-        $sortInfo = $this->parseParams($paramFetcher, $validSortFields, $defaultSort);
+        $listing = new OrganizationCollection($defaultSort);
+        $this->parseParams($paramFetcher, $validSortFields, $listing);
 
-        $organizations = $this->data->getListing('organizations', $sortInfo);
-        $organizations = array_map(array($this, 'formatOrganizationListing'), $organizations);
+        $listing->total = $this->data->getListingTotal('organizations');
+        $listing->organizations = array_map(
+            array($this, 'formatOrganizationListing'),
+            $this->data->getListing('organizations', $listing)
+        );
 
-        return new OrganizationCollection($organizations, $sortInfo);
+        return $listing;
     }
 
     public function getOrganization($id)

@@ -26,18 +26,21 @@ class Systems extends Service
 
     public function __construct($db)
     {
-        parent::__construct($db);
         $this->data = new SystemData($db);
     }
 
     public function getSystems(ParamFetcherInterface $paramFetcher, array $validSortFields, $defaultSort)
     {
-        $sortInfo = $this->parseParams($paramFetcher, $validSortFields, $defaultSort);
+        $listing = new SystemCollection($defaultSort);
+        $this->parseParams($paramFetcher, $validSortFields, $listing);
 
-        $systems = $this->data->getListing('systems', $sortInfo);
-        $systems = array_map(array($this, 'formatSystemListing'), $systems);
+        $listing->total = $this->data->getListingTotal('systems');
+        $listing->systems = array_map(
+            array($this, 'formatSystemListing'),
+            $this->data->getListing('systems', $listing)
+        );
 
-        return new SystemCollection($systems, $sortInfo);
+        return $listing;
     }
 
     public function getSystem($id)

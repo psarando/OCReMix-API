@@ -25,18 +25,21 @@ class Artists extends Service
 
     public function __construct($db)
     {
-        parent::__construct($db);
         $this->data = new ArtistData($db);
     }
 
     public function getArtists(ParamFetcherInterface $paramFetcher, array $validSortFields, $defaultSort)
     {
-        $sortInfo = $this->parseParams($paramFetcher, $validSortFields, $defaultSort);
+        $listing = new ArtistCollection($defaultSort);
+        $this->parseParams($paramFetcher, $validSortFields, $listing);
 
-        $artists = $this->data->getListing('artists', $sortInfo);
-        $artists = array_map(array($this, 'formatArtistListing'), $artists);
+        $listing->total = $this->data->getListingTotal('artists');
+        $listing->artists = array_map(
+            array($this, 'formatArtistListing'),
+            $this->data->getListing('artists', $listing)
+        );
 
-        return new ArtistCollection($artists, $sortInfo);
+        return $listing;
     }
 
     public function getArtist($id)
