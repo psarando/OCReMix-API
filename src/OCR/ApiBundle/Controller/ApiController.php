@@ -4,6 +4,7 @@ namespace OCR\ApiBundle\Controller;
 
 use OCR\ApiBundle\Service\Albums;
 use OCR\ApiBundle\Service\Artists;
+use OCR\ApiBundle\Service\Chiptunes;
 use OCR\ApiBundle\Service\Games;
 use OCR\ApiBundle\Service\Organizations;
 use OCR\ApiBundle\Service\Remixes;
@@ -1121,5 +1122,84 @@ class ApiController extends FOSRestController
         }
 
         return $organization;
+    }
+
+    /**
+     * List all chiptunes.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
+     *
+     * @Annotations\QueryParam(
+     *      name="limit",
+     *      requirements="\d+",
+     *      default="50",
+     *      description="How many chiptunes to return."
+     * )
+     * @Annotations\QueryParam(
+     *      name="offset",
+     *      requirements="\d+",
+     *      default="0",
+     *      description="Offset from which to start listing chiptunes."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-order",
+     *      requirements="id|name|size|file|format|songs",
+     *      default="name",
+     *      description="The field by which to sort chiptunes."
+     *  )
+     * @Annotations\QueryParam(
+     *      name="sort-dir",
+     *      requirements="ASC|DESC",
+     *      default="DESC",
+     *      description="The direction in which to sort chiptunes."
+     *  )
+     *
+     * @param Request               $request      the request object
+     * @param ParamFetcherInterface $paramFetcher param fetcher service
+     *
+     * @return array
+     */
+    public function getChiptunesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
+        $validSortFields = array('id', 'name', 'size', 'file', 'format', 'songs');
+
+        $chiptunes = new Chiptunes($this->get('database_connection'));
+
+        return $chiptunes->getChiptunes($paramFetcher, $validSortFields, 'name');
+    }
+
+    /**
+     * Get a single chiptune.
+     *
+     * @ApiDoc(
+     *   output = "OCR\ApiBundle\Model\Chiptune",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the chiptune is not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param int     $id      the chiptune id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when chiptune does not exist
+     */
+    public function getChiptuneAction(Request $request, $id)
+    {
+        $chiptunes = new Chiptunes($this->get('database_connection'));
+
+        $chiptune = $chiptunes->getChiptune($id);
+        if (empty($chiptune)) {
+            throw $this->createNotFoundException("Chiptune does not exist with ID " . $id);
+        }
+
+        return $chiptune;
     }
 }
