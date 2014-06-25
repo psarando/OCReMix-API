@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
+/**
+ * Model for Artist details.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class Artist extends Entity
 {
     public $real_name;

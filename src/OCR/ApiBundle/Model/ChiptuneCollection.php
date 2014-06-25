@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\SortInfo;
 
+/**
+ * Chiptune Listing.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class ChiptuneCollection extends Listing
 {
     /**

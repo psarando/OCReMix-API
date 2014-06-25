@@ -4,10 +4,17 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
+/**
+ * Model for Organization details.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class Organization extends Entity
 {
     public $name_jp;
     public $references;
+
     public $systems;
     public $games;
     public $composers;

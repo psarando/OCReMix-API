@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
+/**
+ * Model for Remix download details.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class RemixDownloadInfo
 {
     public $size;

@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
+/**
+ * Model for Artist credit counts.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class ArtistCredits
 {
     public $composer;

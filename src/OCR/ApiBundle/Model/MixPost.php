@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
+/**
+ * Model for ReMix post details.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class MixPost extends Entity
 {
     public $posted;

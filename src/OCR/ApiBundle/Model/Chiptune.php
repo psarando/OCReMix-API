@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
+/**
+ * Model for Chiptune details.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class Chiptune extends Entity
 {
     public $size;

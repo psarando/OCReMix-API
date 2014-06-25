@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\SortInfo;
 
+/**
+ * Artist Listing.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class ArtistCollection extends Listing
 {
     /**

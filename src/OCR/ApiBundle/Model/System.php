@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
+/**
+ * Model for System details.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class System extends Entity
 {
     public $name_jp;
@@ -11,6 +17,7 @@ class System extends Entity
     public $release_date;
     public $publisher;
     public $references;
+
     public $games;
     public $composers;
     public $albums;

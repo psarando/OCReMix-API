@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
+/**
+ * Model for Album details.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class Album extends Entity
 {
     public $artists;
@@ -15,6 +21,7 @@ class Album extends Entity
     public $media;
     public $vgmdb_id;
     public $forum_link;
+
     public $composers;
     public $remixes;
     public $artwork;

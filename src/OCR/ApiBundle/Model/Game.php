@@ -4,6 +4,12 @@ namespace OCR\ApiBundle\Model;
 
 use OCR\ApiBundle\Model\Entity;
 
+/**
+ * Model for Game details.
+ *
+ * @package OCR\ApiBundle\Model
+ * @author psarando
+ */
 class Game extends Entity
 {
     public $name_jp;
@@ -13,11 +19,12 @@ class Game extends Entity
     public $system;
     public $composers;
     public $chiptunes;
+    public $artwork;
+    public $references;
+
     public $songs;
     public $albums;
     public $remixes;
-    public $artwork;
-    public $references;
 
     public function __construct($info)
     {
