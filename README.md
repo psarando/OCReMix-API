@@ -1369,7 +1369,7 @@ Optional keys for this endpoint:
 
 ## Composers by Organization
 
-### GET /orgs/000/artists
+### GET /orgs/000/composers
 
 ```json
 {
@@ -1390,7 +1390,7 @@ Optional keys for this endpoint:
 
 ### Example
 
-`curl http://ocremix.org/api/v1/orgs/2/artists`
+`curl http://ocremix.org/api/v1/orgs/2/composers`
 
 ```json
 {
