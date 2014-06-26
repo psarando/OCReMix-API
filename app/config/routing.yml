@@ -13,4 +13,4 @@ _ocr_api:
     resource: "@OcrApiBundle/Controller/ApiController.php"
     type:     rest
     defaults: {_format: json}
-    # prefix: /api/v1/
+    prefix: /api/v1/
