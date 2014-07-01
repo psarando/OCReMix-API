@@ -15,7 +15,7 @@
   (let [song-id (:id song)
         ost-names (map :name (db-songs/fetch-song-ost-names song-id))
         aliases (map :alias (db-songs/fetch-song-aliases song-id))
-        composers (db-songs/fetch-song-composers song-id)
+        composers (db-songs/fetch-song-composers [song-id])
         game (db/fetch-id-name :games (:game song))
         chiptunes (db-games/fetch-game-chiptunes (:id game))]
     (-> song

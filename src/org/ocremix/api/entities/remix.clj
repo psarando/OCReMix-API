@@ -41,7 +41,7 @@
         download-urls (db-remixes/fetch-remix-downloads remix-id)
         songs (db-remixes/fetch-remix-songs remix-id)
         composers (when (seq songs)
-                    (mapcat db-songs/fetch-song-composers (map :id songs)))
+                    (db-songs/fetch-song-composers (map :id songs)))
         game (db/fetch-entity :games (:game remix))
         publisher (db/fetch-id-name :organizations (:publisher game))
         system (db/fetch-id-name :systems (:system game))]

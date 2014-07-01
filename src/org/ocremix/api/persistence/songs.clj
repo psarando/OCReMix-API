@@ -10,12 +10,12 @@
           (where {:rs.song_id id})))
 
 (defn fetch-song-composers
-  [id]
+  [song-ids]
   (select [:artists :a]
           (fields :a.id :a.name)
           (join [:composer_song :cs]
                 {:a.id :cs.composer_id})
-          (where {:cs.song_id id})))
+          (where {:cs.song_id [in song-ids]})))
 
 (defn fetch-song-ost-names
   [song-id]
