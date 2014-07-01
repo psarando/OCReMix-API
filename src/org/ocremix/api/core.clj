@@ -123,8 +123,8 @@
   (GET "/orgs/:organization-id/games" [organization-id]
        (service/trap #(organization/get-organization-games organization-id)))
 
-  (GET "/orgs/:organization-id/artists" [organization-id]
-       (service/trap #(organization/get-organization-artists organization-id)))
+  (GET "/orgs/:organization-id/composers" [organization-id]
+       (service/trap #(organization/get-organization-composers organization-id)))
 
   (GET "/orgs/:organization-id/albums" [organization-id]
        (service/trap #(organization/get-organization-albums organization-id)))

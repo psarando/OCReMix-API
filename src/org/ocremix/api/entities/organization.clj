@@ -24,7 +24,7 @@
   (let [games (db-organizations/fetch-org-games (:id org))]
     (assoc org :games games)))
 
-(defn- format-organization-artists
+(defn- format-organization-composers
   [org]
   (let [composers (db-organizations/fetch-org-composers (:id org))]
     (assoc org :composers composers)))
@@ -47,9 +47,9 @@
   [id]
   (get-organization-info id (partial db/fetch-id-name :organizations) format-organization-albums))
 
-(defn get-organization-artists
+(defn get-organization-composers
   [id]
-  (get-organization-info id (partial db/fetch-id-name :organizations) format-organization-artists))
+  (get-organization-info id (partial db/fetch-id-name :organizations) format-organization-composers))
 
 (defn get-organization-games
   [id]
