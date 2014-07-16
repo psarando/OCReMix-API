@@ -20,5 +20,7 @@
       wrap-params))
 
 (def app
-  (site-handler routes/api-routes))
+  (site-handler
+   (context "/api/v1" []
+            routes/api-routes)))
 
