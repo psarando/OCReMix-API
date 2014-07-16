@@ -13,7 +13,7 @@
                  [korma "0.3.0-RC4"]
                  [ring "1.3.0-RC1"]
                  [me.raynes/fs "1.4.5"]
-                 [org.clojure/clojure "1.5.1"]
+                 [org.clojure/clojure "1.6.0"]
                  [org.clojure/data.codec "0.1.0"]
                  [org.clojure/tools.cli "0.3.1"]
                  [org.clojure/tools.logging "0.2.6"]
