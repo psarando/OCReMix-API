@@ -4,8 +4,7 @@
 
 (defn get-entity-info
   [id fetch-entity-fn not-found-msg]
-  (let [entity-id (param/string-to-int id nil)
-        entity (when entity-id (fetch-entity-fn entity-id))]
+  (let [entity (when id (fetch-entity-fn id))]
     (if entity
         entity
         (throw+ {:status 404

@@ -1,6 +1,6 @@
 (ns org.ocremix.api.entities.remix
-  (:use [slingshot.slingshot :only [throw+]])
-  (:require [org.ocremix.api.persistence :as db]
+  (:require [org.ocremix.api.entities :as entities]
+            [org.ocremix.api.persistence :as db]
             [org.ocremix.api.persistence.remixes :as db-remixes]
             [org.ocremix.api.persistence.songs :as db-songs]
             [org.ocremix.api.util.date :as date]))
@@ -60,9 +60,8 @@
 
 (defn get-remix
   [remix-id]
-  (let [remix (db/fetch-entity :remixes remix-id)]
-    (if remix
-        (format-remix remix)
-        (throw+ {:status 404
-                 :body (str "Remix ID not found: " remix-id)}))))
+  (let [remix (entities/get-entity-info remix-id
+                                        (partial db/fetch-entity :remixes)
+                                        (str "Remix ID not found: " remix-id))]
+    (format-remix remix)))
 

@@ -1,17 +1,13 @@
 (ns org.ocremix.api.entities.system
-  (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.entities :as entities]
             [org.ocremix.api.persistence :as db]
             [org.ocremix.api.persistence.systems :as db-systems]
             [org.ocremix.api.util.date :as date]))
 
 (defn- get-system-info
-  [system-id fetch-info-fn format-fn]
-  (let [system (when system-id (fetch-info-fn system-id))]
-    (if system
-        (format-fn system)
-        (throw+ {:status 404
-                 :body (str "System ID not found: " system-id)}))))
+  [id fetch-info-fn format-fn]
+  (let [system (entities/get-entity-info id fetch-info-fn (str "System ID not found: " id))]
+    (format-fn system)))
 
 (defn- format-system
   [system]
