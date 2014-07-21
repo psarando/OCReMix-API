@@ -1,16 +1,31 @@
 (ns org.ocremix.api.util.param
   (:require [clojure.string :as string]))
 
-(defn string-to-int
-  "Attempts to convert a String to an integer.
-   Returns the given default if the string can't be converted."
-  [value default]
+(defmulti param->int-value
+  (fn [obj] (type obj)))
+
+(defmethod param->int-value java.lang.String
+  [value]
   (try
-    (if value
-      (Integer/parseInt value)
-      default)
+    (Integer/parseInt value)
     (catch NumberFormatException e
-      default)))
+      nil)))
+
+(defmethod param->int-value java.lang.Number
+  [value]
+  (.intValue value))
+
+(defmethod param->int-value :default
+  [value]
+  nil)
+
+(defn param->int
+  "Attempts to convert a request parameter to an integer.
+   Returns the given default if the parameter can't be converted."
+  [value default]
+  (if-let [int-value (param->int-value value)]
+      int-value
+      default))
 
 (defn parse-sort-field
   "Returns the given sort-field as a lower-cased keyword if the set valid-sort-fields contains that
@@ -30,12 +45,10 @@
 (defn parse-paging-params
   "Parses valid limit, offset, sort-field, and sort-dir values from the given request params and
    valid/default sort fields."
-  [params valid-sort-fields default-sort-field]
-  (let [limit (string-to-int (:limit params) 50)
-        offset (string-to-int (:offset params) 0)
-        sort-dir (parse-sort-dir (:sort-dir params))
-        sort-field (parse-sort-field (:sort-order params)
-                                     valid-sort-fields
-                                     default-sort-field)]
+  [{:keys [limit offset sort-dir sort-order]} valid-sort-fields default-sort-field]
+  (let [limit (param->int limit 50)
+        offset (param->int offset 0)
+        sort-dir (parse-sort-dir sort-dir)
+        sort-field (parse-sort-field sort-order valid-sort-fields default-sort-field)]
     [limit offset sort-field sort-dir]))
 
