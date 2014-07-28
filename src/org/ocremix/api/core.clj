@@ -12,25 +12,21 @@
   (config/load-config-from-file)
   (db/define-database))
 
-(defn site-handler
-  [routes-fn]
-  (-> routes-fn
-      handlers/req-logger
-      handlers/wrap-lcase-params
-      wrap-keyword-params
-      wrap-params))
-
 (defapi app
-  (swagger-ui)
-  (swagger-docs "/api/api-docs"
-                :title "OCReMix API"
-                :apiVersion "0.1.0"
-                :description "OCReMix Public API"
-                :license "Eclipse 1.0"
-                :licenseUrl "http://www.eclipse.org/legal/epl-v10.html")
-  (swaggered "api.v1"
-             :description "OCReMix API v1"
-             (site-handler
+  (middlewares
+   [handlers/wrap-lcase-params
+    wrap-keyword-params
+    wrap-params
+    handlers/req-logger]
+   (swagger-ui)
+   (swagger-docs "/api/api-docs"
+                 :title "OCReMix API"
+                 :apiVersion "0.1.0"
+                 :description "OCReMix Public API"
+                 :license "Eclipse 1.0"
+                 :licenseUrl "http://www.eclipse.org/legal/epl-v10.html")
+   (swaggered "api.v1"
+              :description "OCReMix API v1"
               (context "/api/v1" []
                        routes/api-routes))))
 

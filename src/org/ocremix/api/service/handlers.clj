@@ -20,9 +20,11 @@
    :else            target))
 
 (defn wrap-lcase-params
-  "Middleware that converts all parameters under :params to lower case so that they can be treated
-   as effectively case-insensitive."
+  "Middleware that converts all parameters under :params and :query-params to lower case so that
+   they can be treated as effectively case-insensitive."
   [handler]
   (fn [req]
-    (handler (update-in req [:params] lcase-params))))
+    (handler (-> req
+                 (update-in [:params] lcase-params)
+                 (update-in [:query-params] lcase-params)))))
 
