@@ -2,7 +2,7 @@
   (:require [org.ocremix.api.listings :as listings]
             [org.ocremix.api.util.date :as date]))
 
-(def ^:private artist-sort-fields #{:id :name :real_name :gender :birthdate :birthplace})
+(def sort-fields #{:id :name :real_name :gender :birthdate :birthplace})
 
 (defn- format-artist
   [artist]
@@ -13,6 +13,6 @@
 
 (defn get-artists
   [params]
-  (let [artists (listings/get-listing :artists params artist-sort-fields :name)]
+  (let [artists (listings/get-listing :artists params sort-fields :name)]
     {:artists (map format-artist artists)}))
 

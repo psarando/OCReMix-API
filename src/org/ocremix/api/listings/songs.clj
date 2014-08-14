@@ -2,7 +2,7 @@
   (:require [org.ocremix.api.listings :as listings]
             [org.ocremix.api.persistence :as db]))
 
-(def ^:private song-sort-fields #{:id :name})
+(def sort-fields #{:id :name})
 
 (defn- format-song
   [song]
@@ -11,6 +11,6 @@
 
 (defn get-songs
   [params]
-  (let [songs (listings/get-listing :songs params song-sort-fields :name)]
+  (let [songs (listings/get-listing :songs params sort-fields :name)]
     {:songs (map format-song songs)}))
 

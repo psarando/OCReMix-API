@@ -3,7 +3,7 @@
             [org.ocremix.api.persistence :as db]
             [org.ocremix.api.util.date :as date]))
 
-(def ^:private game-sort-fields #{:id :name :name_short :name_jp :year :system})
+(def sort-fields #{:id :name :name_short :name_jp :year :system})
 
 (defn- format-game
   [game]
@@ -19,6 +19,6 @@
 
 (defn get-games
   [params]
-  (let [games (listings/get-listing :games params game-sort-fields :name)]
+  (let [games (listings/get-listing :games params sort-fields :name)]
     {:games (map format-game games)}))
 

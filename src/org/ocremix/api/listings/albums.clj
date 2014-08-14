@@ -2,7 +2,7 @@
   (:require [org.ocremix.api.listings :as listings]
             [org.ocremix.api.persistence :as db]))
 
-(def ^:private album-sort-fields #{:id :name :catalog :release_date :media :vgmdb_id})
+(def sort-fields #{:id :name :catalog :release_date :media :vgmdb_id})
 
 (defn- format-album
   [album]
@@ -12,6 +12,6 @@
 
 (defn get-albums
   [params]
-  (let [albums (listings/get-listing :albums params album-sort-fields :release_date)]
+  (let [albums (listings/get-listing :albums params sort-fields :release_date)]
     {:albums (map format-album albums)}))
 

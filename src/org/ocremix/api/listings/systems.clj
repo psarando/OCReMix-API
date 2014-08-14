@@ -3,7 +3,7 @@
             [org.ocremix.api.persistence :as db]
             [org.ocremix.api.util.date :as date]))
 
-(def ^:private system-sort-fields #{:id :name :name_jp :year :release_date})
+(def sort-fields #{:id :name :name_jp :year :release_date})
 
 (defn- format-system
   [system]
@@ -16,6 +16,6 @@
 
 (defn get-systems
   [params]
-  (let [systems (listings/get-listing :systems params system-sort-fields :name)]
+  (let [systems (listings/get-listing :systems params sort-fields :name)]
     {:systems (map format-system systems)}))
 

@@ -5,7 +5,7 @@
             [org.ocremix.api.persistence.songs :as db-songs]
             [org.ocremix.api.util.date :as date]))
 
-(def ^:private remix-sort-fields #{:id :title :year :size})
+(def sort-fields #{:id :title :year :size})
 
 (defn- date-to-year
   [m]
@@ -44,6 +44,6 @@
 
 (defn get-remixes
   [params]
-  (let [remixes (listings/get-listing :remixes params remix-sort-fields :id)]
+  (let [remixes (listings/get-listing :remixes params sort-fields :id)]
     {:remixes (map format-remix remixes)}))
 

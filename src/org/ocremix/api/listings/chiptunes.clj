@@ -2,7 +2,7 @@
   (:require [org.ocremix.api.listings :as listings]
             [org.ocremix.api.persistence :as db]))
 
-(def ^:private chiptune-sort-fields #{:id :name :size :file :format :songs})
+(def sort-fields #{:id :name :size :file :format :songs})
 
 (defn- format-chiptune
   [chiptune]
@@ -12,6 +12,6 @@
 
 (defn get-chiptunes
   [params]
-  (let [chiptunes (listings/get-listing :chiptunes params chiptune-sort-fields :name)]
+  (let [chiptunes (listings/get-listing :chiptunes params sort-fields :name)]
     {:chiptunes (map format-chiptune chiptunes)}))
 

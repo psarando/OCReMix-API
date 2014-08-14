@@ -12,7 +12,7 @@
                  [korma "0.3.2"]
                  [ring "1.3.0"]
                  [me.raynes/fs "1.4.5"]
-                 [metosin/compojure-api "0.14.0"]
+                 [metosin/compojure-api "0.15.0"]
                  [metosin/ring-swagger-ui "2.0.17"]
                  [org.clojure/clojure "1.6.0"]
                  [org.clojure/data.codec "0.1.0"]

@@ -1,4 +1,6 @@
 (ns org.ocremix.api.routes
+  (:use [org.ocremix.api.domain]
+        [compojure.api.sweet])
   (:require [org.ocremix.api.entities.album :as album]
             [org.ocremix.api.entities.artist :as artist]
             [org.ocremix.api.entities.chiptune :as chiptune]
@@ -16,24 +18,17 @@
             [org.ocremix.api.listings.songs :as songs]
             [org.ocremix.api.listings.systems :as systems]
             [org.ocremix.api.service :as service]
-            [compojure.api.sweet :refer :all]
             [compojure.route :as route]))
-
-(defn- ->params-map
-  [sort-order sort-dir limit offset]
-  {:sort-order sort-order
-   :sort-dir sort-dir
-   :limit limit
-   :offset offset})
 
 (defroutes* api-routes
   (GET* "/remixes" []
         :summary      "List all remixes."
-        :query-params [{sort-order :- String "id"}
-                       {sort-dir :- String "DESC"}
-                       {limit :- Long 50}
-                       {offset :- Long 0}]
-        (service/trap #(remixes/get-remixes (->params-map sort-order sort-dir limit offset))))
+        :query-params [{sort-order :- (sort-order-docs remixes/sort-fields "id") "id"}
+                       {sort-dir :- (sort-dir-docs "DESC") "DESC"}
+                       {limit :- limit-docs 50}
+                       {offset :- offset-docs 0}
+                       :as params]
+        (service/trap #(remixes/get-remixes params)))
 
   (GET* "/remixes/:remix-id" [remix-id]
         :summary "Get a single remix."
@@ -41,11 +36,12 @@
 
   (GET* "/songs" []
         :summary      "List all songs."
-        :query-params [{sort-order :- String "name"}
-                       {sort-dir :- String "ASC"}
-                       {limit :- Long 50}
-                       {offset :- Long 0}]
-        (service/trap #(songs/get-songs (->params-map sort-order sort-dir limit offset))))
+        :query-params [{sort-order :- (sort-order-docs songs/sort-fields "name") "name"}
+                       {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+                       {limit :- limit-docs 50}
+                       {offset :- offset-docs 0}
+                       :as params]
+        (service/trap #(songs/get-songs params)))
 
   (GET* "/songs/:song-id" [song-id]
         :summary     "Get a single song."
@@ -59,11 +55,12 @@
 
   (GET* "/games" []
         :summary      "List all games."
-        :query-params [{sort-order :- String "name"}
-                       {sort-dir :- String "ASC"}
-                       {limit :- Long 50}
-                       {offset :- Long 0}]
-        (service/trap #(games/get-games (->params-map sort-order sort-dir limit offset))))
+        :query-params [{sort-order :- (sort-order-docs games/sort-fields "name") "name"}
+                       {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+                       {limit :- limit-docs 50}
+                       {offset :- offset-docs 0}
+                       :as params]
+        (service/trap #(games/get-games params)))
 
   (GET* "/games/:game-id" [game-id]
         :summary     "Get a single game."
@@ -87,11 +84,12 @@
 
   (GET* "/albums" []
         :summary      "List all albums."
-        :query-params [{sort-order :- String "release_date"}
-                       {sort-dir :- String "DESC"}
-                       {limit :- Long 50}
-                       {offset :- Long 0}]
-        (service/trap #(albums/get-albums (->params-map sort-order sort-dir limit offset))))
+        :query-params [{sort-order :- (sort-order-docs albums/sort-fields "release_date") "release_date"}
+                       {sort-dir :- (sort-dir-docs "DESC") "DESC"}
+                       {limit :- limit-docs 50}
+                       {offset :- offset-docs 0}
+                       :as params]
+        (service/trap #(albums/get-albums params)))
 
   (GET* "/albums/:album-id" [album-id]
         :summary     "Get a single album."
@@ -110,11 +108,12 @@
 
   (GET* "/artists" []
         :summary      "List all artists."
-        :query-params [{sort-order :- String "name"}
-                       {sort-dir :- String "ASC"}
-                       {limit :- Long 50}
-                       {offset :- Long 0}]
-        (service/trap #(artists/get-artists (->params-map sort-order sort-dir limit offset))))
+        :query-params [{sort-order :- (sort-order-docs artists/sort-fields "name") "name"}
+                       {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+                       {limit :- limit-docs 50}
+                       {offset :- offset-docs 0}
+                       :as params]
+        (service/trap #(artists/get-artists params)))
 
   (GET* "/artists/:artist-id" [artist-id]
         :summary     "Get a single artist."
@@ -138,11 +137,12 @@
 
   (GET* "/systems" []
         :summary      "List all systems."
-        :query-params [{sort-order :- String "name"}
-                       {sort-dir :- String "ASC"}
-                       {limit :- Long 50}
-                       {offset :- Long 0}]
-        (service/trap #(systems/get-systems (->params-map sort-order sort-dir limit offset))))
+        :query-params [{sort-order :- (sort-order-docs systems/sort-fields "name") "name"}
+                       {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+                       {limit :- limit-docs 50}
+                       {offset :- offset-docs 0}
+                       :as params]
+        (service/trap #(systems/get-systems params)))
 
   (GET* "/systems/:system-id" [system-id]
         :summary      "Get a single system."
@@ -166,12 +166,12 @@
 
   (GET* "/orgs" []
         :summary      "List all organizations."
-        :query-params [{sort-order :- String "name"}
-                       {sort-dir :- String "ASC"}
-                       {limit :- Long 50}
-                       {offset :- Long 0}]
-        (service/trap #(organizations/get-organizations
-                        (->params-map sort-order sort-dir limit offset))))
+        :query-params [{sort-order :- (sort-order-docs organizations/sort-fields "name") "name"}
+                       {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+                       {limit :- limit-docs 50}
+                       {offset :- offset-docs 0}
+                       :as params]
+        (service/trap #(organizations/get-organizations params)))
 
   (GET* "/orgs/:organization-id" [organization-id]
         :summary     "Get a single organization."
@@ -205,11 +205,12 @@
 
   (GET* "/chiptunes" []
         :summary      "List all chiptunes."
-        :query-params [{sort-order :- String "name"}
-                       {sort-dir :- String "ASC"}
-                       {limit :- Long 50}
-                       {offset :- Long 0}]
-        (service/trap #(chiptunes/get-chiptunes (->params-map sort-order sort-dir limit offset))))
+        :query-params [{sort-order :- (sort-order-docs chiptunes/sort-fields "name") "name"}
+                       {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+                       {limit :- limit-docs 50}
+                       {offset :- offset-docs 0}
+                       :as params]
+        (service/trap #(chiptunes/get-chiptunes params)))
 
   (GET* "/chiptunes/:chiptune-id" [chiptune-id]
         :summary     "Get a single chiptune."
