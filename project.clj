@@ -1,4 +1,4 @@
-(defproject org.ocremix/api "0.0.1-SNAPSHOT"
+(defproject org.ocremix/api "0.0.2-SNAPSHOT"
   :description "OCReMix.org public API."
   :url "https://github.com/psarando/OCReMix-API"
   :license {:name "Eclipse Public License - v 1.0"
@@ -6,24 +6,20 @@
   :scm {:connection "scm:git:git@github.com:psarando/OCReMix-API.git"
         :developerConnection "scm:git:git@github.com:psarando/OCReMix-API.git"
         :url "git@github.com:psarando/OCReMix-API.git"}
-  :dependencies [[cheshire "5.3.1"]
-                 [clj-http "0.9.1"]
-                 [clj-time "0.7.0"]
-                 [korma "0.3.2"]
-                 [ring "1.3.0"]
-                 [me.raynes/fs "1.4.5"]
-                 [metosin/compojure-api "0.15.0"]
-                 [metosin/ring-swagger-ui "2.0.17"]
-                 [org.clojure/clojure "1.6.0"]
-                 [org.clojure/data.codec "0.1.0"]
-                 [org.clojure/tools.cli "0.3.1"]
-                 [org.clojure/tools.logging "0.2.6"]
+  :dependencies [[org.clojure/clojure "1.6.0"]
+                 [org.clojure/tools.logging "0.3.1"]
+                 [cheshire "5.5.0"]
+                 [clj-http "1.0.0"]
+                 [clj-time "0.9.0"]
+                 [korma "0.4.2"]
+                 [me.raynes/fs "1.4.6"]
+                 [metosin/compojure-api "0.22.1"]
                  [postgresql "9.3-1101.jdbc4"]]
-  :plugins [[lein-ring "0.8.11"]]
-  :aot [org.ocremix.api.core]
-  :main org.ocremix.api.core
   :ring {:handler org.ocremix.api.core/app
          :init org.ocremix.api.core/lein-ring-init
          :port 8080}
+  :uberjar-name "ocr-api.jar"
+  :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]]
+                   :plugins [[lein-ring "0.9.6"]]}}
   :uberjar-exclusions [#".*[.]SF" #"LICENSE" #"NOTICE"])
 

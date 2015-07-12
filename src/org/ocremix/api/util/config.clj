@@ -15,14 +15,6 @@
       (log/error "Missing required property:" prop-name))
     value))
 
-(defn db-driver
-  []
-  (get-required-prop :ocr.db.driver))
-
-(defn db-subprotocol
-  []
-  (get-required-prop :ocr.db.subprotocol))
-
 (defn db-host
   []
   (get-required-prop :ocr.db.host))

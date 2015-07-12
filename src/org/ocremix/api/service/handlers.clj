@@ -5,7 +5,7 @@
 (defn req-logger
   [handler]
   (fn [req]
-    (log/info "Request received:" req)
+    (log/info "Request received:" (dissoc req :body :ring.swagger.middleware/data))
     (handler req)))
 
 (defn- lcase-params

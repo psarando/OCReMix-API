@@ -7,17 +7,17 @@
   "Creates the database connection spec to use when accessing the database
    using Korma."
   []
-  {:classname   (config/db-driver)
-   :subprotocol (config/db-subprotocol)
-   :subname     (str "//" (config/db-host) ":" (config/db-port) "/" (config/db-name))
-   :user        (config/db-user)
-   :password    (config/db-password)})
+  (db/postgres
+    {:host     (config/db-host)
+     :port     (config/db-port)
+     :db       (config/db-name)
+     :user     (config/db-user)
+     :password (config/db-password)}))
 
 (defn define-database
   "Defines the database connection to use from within Clojure."
   []
-  (defonce ocr (db/create-db (create-db-spec)))
-  (db/default-connection ocr))
+  (db/defdb ocr (create-db-spec)))
 
 (defn fetch-listing
   [table result-limit start sort-field sort-dir]
