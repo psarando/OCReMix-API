@@ -5,8 +5,12 @@
 (defn req-logger
   [handler]
   (fn [req]
-    (log/info "Request received:" (dissoc req :body :ring.swagger.middleware/data))
-    (handler req)))
+    (log/info "Request received:" (dissoc req :body
+                                              :ring.swagger.middleware/data
+                                              :compojure.api.middleware/options))
+    (let [response (handler req)]
+      (log/info "Response:" (dissoc response :body))
+      response)))
 
 (defn- lcase-params
   [target]

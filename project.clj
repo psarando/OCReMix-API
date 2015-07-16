@@ -14,7 +14,8 @@
                  [korma "0.4.2"]
                  [me.raynes/fs "1.4.6"]
                  [metosin/compojure-api "0.22.1"]
-                 [postgresql "9.3-1101.jdbc4"]]
+                 [postgresql "9.3-1101.jdbc4"]
+                 [slingshot "0.12.2"]]
   :ring {:handler org.ocremix.api.core/app
          :init org.ocremix.api.core/lein-ring-init
          :port 8080}

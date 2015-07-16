@@ -1,5 +1,4 @@
 (ns org.ocremix.api.entities.song
-  (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.entities :as entities]
             [org.ocremix.api.persistence :as db]
             [org.ocremix.api.persistence.games :as db-games]

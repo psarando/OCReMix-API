@@ -1,5 +1,4 @@
 (ns org.ocremix.api.entities.album
-  (:use [slingshot.slingshot :only [throw+]])
   (:require [org.ocremix.api.entities :as entities]
             [org.ocremix.api.persistence :as db]
             [org.ocremix.api.persistence.albums :as db-albums]))

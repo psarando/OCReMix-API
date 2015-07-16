@@ -1,6 +1,7 @@
 (ns org.ocremix.api.core
   (:use [compojure.api.sweet]
-        [ring.middleware params keyword-params])
+        [ring.middleware params keyword-params]
+        [ring.middleware.http-response :only [wrap-http-response]])
   (:require [compojure.route :as route]
             [org.ocremix.api.persistence :as db]
             [org.ocremix.api.routes :as routes]
@@ -34,6 +35,7 @@
    [handlers/wrap-lcase-params
     wrap-keyword-params
     wrap-params
+    wrap-http-response
     handlers/req-logger]
     (context* "/api/v1" []
       :tags ["api.v1"]
