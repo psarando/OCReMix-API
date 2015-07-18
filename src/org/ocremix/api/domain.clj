@@ -9,15 +9,15 @@
 
 (defn sort-order-docs
   [valid-sort-fields default-sort]
-  (describe String (str "The listing field with which to sort the results. `"
-                        default-sort
-                        "` by default."
-                        " Valid sort fields: "
-                        (clojure.string/join ", " (map name valid-sort-fields)))))
+  (describe (apply s/enum valid-sort-fields)
+    (str "The listing field with which to sort the results. `"
+         default-sort
+         "` by default.")))
 
 (defn sort-dir-docs
   [default-sort-dir]
-  (describe String (str "When a sort-order is given, this parameter determines the sort direction: `ASC` or `DESC`. `"
-                        default-sort-dir
-                        "` by default.")))
+  (describe (s/enum :ASC :DESC)
+    (str "When a sort-order is given, this parameter determines the sort direction. `"
+         default-sort-dir
+         "` by default.")))
 

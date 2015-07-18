@@ -25,8 +25,8 @@
 
     (GET* "/" []
       :summary      "List all remixes."
-      :query-params [{sort-order :- (sort-order-docs remixes/sort-fields "id") "id"}
-                     {sort-dir :- (sort-dir-docs "DESC") "DESC"}
+      :query-params [{sort-order :- (sort-order-docs remixes/sort-fields "id") :id}
+                     {sort-dir :- (sort-dir-docs "DESC") :DESC}
                      {limit :- limit-docs 50}
                      {offset :- offset-docs 0}
                      :as params]
@@ -42,8 +42,8 @@
 
     (GET* "/" []
       :summary      "List all songs."
-      :query-params [{sort-order :- (sort-order-docs songs/sort-fields "name") "name"}
-                     {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+      :query-params [{sort-order :- (sort-order-docs songs/sort-fields "name") :name}
+                     {sort-dir :- (sort-dir-docs "ASC") :ASC}
                      {limit :- limit-docs 50}
                      {offset :- offset-docs 0}
                      :as params]
@@ -65,8 +65,8 @@
 
     (GET* "/" []
       :summary      "List all games."
-      :query-params [{sort-order :- (sort-order-docs games/sort-fields "name") "name"}
-                     {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+      :query-params [{sort-order :- (sort-order-docs games/sort-fields "name") :name}
+                     {sort-dir :- (sort-dir-docs "ASC") :ASC}
                      {limit :- limit-docs 50}
                      {offset :- offset-docs 0}
                      :as params]
@@ -98,8 +98,8 @@
 
     (GET* "/" []
       :summary      "List all albums."
-      :query-params [{sort-order :- (sort-order-docs albums/sort-fields "release_date") "release_date"}
-                     {sort-dir :- (sort-dir-docs "DESC") "DESC"}
+      :query-params [{sort-order :- (sort-order-docs albums/sort-fields "release_date") :release_date}
+                     {sort-dir :- (sort-dir-docs "DESC") :DESC}
                      {limit :- limit-docs 50}
                      {offset :- offset-docs 0}
                      :as params]
@@ -126,8 +126,8 @@
 
     (GET* "/" []
       :summary      "List all artists."
-      :query-params [{sort-order :- (sort-order-docs artists/sort-fields "name") "name"}
-                     {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+      :query-params [{sort-order :- (sort-order-docs artists/sort-fields "name") :name}
+                     {sort-dir :- (sort-dir-docs "ASC") :ASC}
                      {limit :- limit-docs 50}
                      {offset :- offset-docs 0}
                      :as params]
@@ -159,8 +159,8 @@
 
     (GET* "/" []
       :summary      "List all systems."
-      :query-params [{sort-order :- (sort-order-docs systems/sort-fields "name") "name"}
-                     {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+      :query-params [{sort-order :- (sort-order-docs systems/sort-fields "name") :name}
+                     {sort-dir :- (sort-dir-docs "ASC") :ASC}
                      {limit :- limit-docs 50}
                      {offset :- offset-docs 0}
                      :as params]
@@ -192,8 +192,8 @@
 
     (GET* "/" []
       :summary      "List all organizations."
-      :query-params [{sort-order :- (sort-order-docs organizations/sort-fields "name") "name"}
-                     {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+      :query-params [{sort-order :- (sort-order-docs organizations/sort-fields "name") :name}
+                     {sort-dir :- (sort-dir-docs "ASC") :ASC}
                      {limit :- limit-docs 50}
                      {offset :- offset-docs 0}
                      :as params]
@@ -235,8 +235,8 @@
 
     (GET* "/" []
       :summary      "List all chiptunes."
-      :query-params [{sort-order :- (sort-order-docs chiptunes/sort-fields "name") "name"}
-                     {sort-dir :- (sort-dir-docs "ASC") "ASC"}
+      :query-params [{sort-order :- (sort-order-docs chiptunes/sort-fields "name") :name}
+                     {sort-dir :- (sort-dir-docs "ASC") :ASC}
                      {limit :- limit-docs 50}
                      {offset :- offset-docs 0}
                      :as params]

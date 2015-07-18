@@ -31,16 +31,15 @@
   "Returns the given sort-field as a lower-cased keyword if the set valid-sort-fields contains that
    keyword, otherwise the default-sort-field is returned."
   [sort-field valid-sort-fields default-sort-field]
-  (let [sort-field (keyword (when sort-field (string/lower-case sort-field)))]
-    (if (contains? valid-sort-fields sort-field)
-      sort-field
-      default-sort-field)))
+  (if (contains? valid-sort-fields sort-field)
+    sort-field
+    default-sort-field))
 
 (defn parse-sort-dir
   [sort-dir]
-  (if (and sort-dir (= (string/upper-case sort-dir) "ASC"))
+  (if-not sort-dir
     :ASC
-    :DESC))
+    sort-dir))
 
 (defn parse-paging-params
   "Parses valid limit, offset, sort-field, and sort-dir values from the given request params and
